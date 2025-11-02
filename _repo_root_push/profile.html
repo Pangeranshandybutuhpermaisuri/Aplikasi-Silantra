@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Profil - SiLantra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{ --bg-top:#c5dd74; --bg-mid:#86c18d; --bg-bottom:#5b7fb4; --card:#ffffff; --text:#111827; --muted:#6b7280; --radius:18px }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;color:var(--text)}
+    html{background:linear-gradient(180deg,var(--bg-top) 0%,var(--bg-mid) 45%,var(--bg-bottom) 100%);background-attachment:fixed;background-repeat:no-repeat;background-size:cover}
+    body{background:transparent;display:flex;justify-content:center;align-items:flex-start}
+    .phone{width:390px;max-width:100%;min-height:100vh;position:relative;display:flex;flex-direction:column;padding-bottom:80px}
+
+    .kis-card{margin:12px 18px 0;background:#f8fafc;border-radius:14px;box-shadow:0 8px 16px rgba(0,0,0,.25);overflow:hidden}
+    .kis-top{height:46px;background:linear-gradient(90deg,#1f9d55,#0ea5e9);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;letter-spacing:.4px}
+    .kis-body{background:#fff;padding:12px 14px 10px}
+    .kis-bar{height:6px;background:#e5e7eb;border-radius:999px;margin:10px 0}
+
+    .card{margin:12px 18px;background:var(--card);border-radius:24px;box-shadow:0 12px 40px rgba(0,0,0,.18);padding:16px}
+    .field{margin-bottom:16px}
+    .label{font-weight:700;font-size:16px;margin-bottom:8px}
+    .display{background:#ffffff;border:1px solid #e5e7eb;border-radius:14px;padding:14px 14px;box-shadow:0 4px 10px rgba(0,0,0,.12);font-weight:700;color:#111827}
+    .input{width:100%;border:none;outline:none;font:inherit;color:inherit;background:transparent}
+
+    .status-row{display:flex;align-items:center;gap:8px}
+    .dot{width:10px;height:10px;border-radius:50%}
+
+    .btn{width:100%;margin:10px 0 8px;padding:14px 16px;border:none;outline:none;cursor:pointer;border-radius:999px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#4338ca,#e11d48,#f97316);color:#fff;font-weight:800;letter-spacing:1.4px;font-size:20px;box-shadow:0 10px 24px rgba(225,29,72,.35);transition:transform .12s ease, box-shadow .12s ease, filter .2s ease}
+    .btn:hover{filter:brightness(1.02)}
+    .btn:active{transform:scale(.98)}
+    @keyframes btnPop{0%{transform:scale(.98)}70%{transform:scale(1.02)}100%{transform:scale(1)}}
+    .btn.clicked{animation:btnPop 220ms ease-out}
+
+    .logout{background:#111827;color:#fff}
+
+    .bottom-nav-wrap{position:fixed;left:0;right:0;bottom:0}
+    .bottom-pad{height:54px;background:transparent}
+    .bottom-nav{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center}
+    .dock{display:flex;gap:24px;background:#d1d5db;padding:10px 18px;border-radius:12px;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+    .dock-btn{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;background:#9ca3af;color:#0f172a;transition:transform .18s ease, filter .2s ease, box-shadow .18s ease}
+    .dock-btn.account{background:#a7f3d0}
+    .dock-btn.home{background:#93c5fd}
+    .dock-btn.back{background:#6ee7e7}
+    .dock-btn:hover{filter:brightness(1.05);transform:translateY(-2px)}
+    .dock-btn:active{transform:translateY(0) scale(.96)}
+    @keyframes dockBounce{0%{transform:translateY(0) scale(1)}40%{transform:translateY(-3px) scale(1.04)}100%{transform:translateY(0) scale(1)}}
+    .dock-btn.clicked{animation:dockBounce 280ms ease-out}
+    .dock-btn svg{width:22px;height:22px}
+
+    @media (max-width:360px){.phone{padding-bottom:94px}}
+  </style>
+</head>
+<body>
+  <main class="phone" role="main">
+    <section class="card" aria-label="Data Profil">
+      <div class="field">
+        <div class="label">Username</div>
+        <div class="display"><input id="iUsername" class="input" placeholder="Masukkan username" /></div>
+      </div>
+      <div class="field">
+        <div class="label">No Telepon</div>
+        <div class="display"><input id="iPhone" class="input" inputmode="tel" placeholder="Masukkan nomor telepon" /></div>
+      </div>
+      <div class="field">
+        <div class="label">Segmen Peserta</div>
+        <div class="display"><input id="iPeserta" class="input" placeholder="Segmen Peserta" /></div>
+      </div>
+      <div class="field">
+        <div class="label">Status</div>
+        <div class="display status-row"><span id="statusDot" class="dot"></span><span id="vStatus">-</span></div>
+      </div>
+      <button id="saveBtn" class="btn" type="button">SIMPAN</button>
+      <button id="logoutBtn" class="btn logout" type="button">KELUAR</button>
+    </section>
+
+    <div class="bottom-nav-wrap" aria-hidden="false">
+      <div class="bottom-pad"></div>
+      <nav class="bottom-nav">
+        <div class="dock">
+          <a class="dock-btn account" href="profile.html" title="Akun">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5.33 0-8 2.67-8 6v1h16v-1c0-3.33-2.67-6-8-6Z" fill="#111827"/></svg>
+          </a>
+          <a class="dock-btn home" href="menu-awal.html" title="Beranda">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z" fill="#0f172a"/></svg>
+          </a>
+          <a class="dock-btn back" href="#" id="backBtn" title="Kembali">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 7l-5 5 5 5" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </main>
+
+  <script>
+    const saveBtn = document.getElementById('saveBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const backBtn = document.getElementById('backBtn');
+
+    const iUsername = document.getElementById('iUsername');
+    const iPhone = document.getElementById('iPhone');
+    const iPeserta = document.getElementById('iPeserta');
+    const vStatus = document.getElementById('vStatus');
+    const statusDot = document.getElementById('statusDot');
+
+    // Ambil data dari localStorage (prioritas akun yang sedang login)
+    const regUsername = localStorage.getItem('username') || localStorage.getItem('reg_username') || '';
+    const regPhone = localStorage.getItem('reg_phone') || '';
+    const nik = localStorage.getItem('nik') || '';
+    iUsername.value = regUsername;
+    iPhone.value = regPhone;
+
+    // Segmen peserta ditetapkan sebagai PBI (Jaminan Kesehatan Nasional)
+    iPeserta.value = 'PBI (Jaminan Kesehatan Nasional)';
+
+    // Status aktif jika tanggal <= 10, tidak aktif jika > 10
+    const today = new Date();
+    const active = today.getDate() <= 10;
+    vStatus.textContent = active ? 'Aktif' : 'Tidak Aktif';
+    statusDot.style.background = active ? '#16a34a' : '#ef4444';
+
+    // Animasi tombol
+    const pop = (el)=>{ el.classList.remove('clicked'); void el.offsetWidth; el.classList.add('clicked'); };
+    saveBtn.addEventListener('click', ()=>{ 
+      const uname = (iUsername.value || '').trim();
+      const tel = (iPhone.value || '').trim();
+      const peserta = (iPeserta.value || '').trim();
+      if(!uname){ alert('Username tidak boleh kosong.'); iUsername.focus(); return; }
+      if(tel && !/^\+?\d{8,15}$/.test(tel)){ alert('No Telepon harus berupa angka (8-15 digit), boleh diawali +.'); iPhone.focus(); return; }
+      try{
+        localStorage.setItem('reg_username', uname);
+        localStorage.setItem('username', uname);
+        localStorage.setItem('reg_phone', tel);
+        localStorage.setItem('peserta_nama', peserta);
+      }catch{}
+      pop(saveBtn);
+      setTimeout(()=>{ window.location.href = 'menu-awal.html'; }, 240);
+    });
+    logoutBtn.addEventListener('click', ()=>{ 
+      pop(logoutBtn);
+      try{ localStorage.removeItem('username'); localStorage.removeItem('reg_username'); localStorage.removeItem('reg_phone'); localStorage.removeItem('nik'); localStorage.removeItem('peserta_nama'); }catch{}
+      setTimeout(()=>{ window.location.href = 'login.html'; }, 240);
+    });
+
+    // Dock animations
+    document.querySelectorAll('.dock-btn').forEach(el=>{
+      el.addEventListener('click', ()=>{ el.classList.remove('clicked'); void el.offsetWidth; el.classList.add('clicked'); });
+    });
+
+    // Back
+    backBtn.addEventListener('click', (e)=>{ e.preventDefault(); history.back(); });
+
+    // Dock routing
+    document.querySelectorAll('.dock-btn.home').forEach(a=>{ a.setAttribute('href','menu-awal.html'); });
+    document.querySelectorAll('.dock-btn.back').forEach(a=>{
+      a.addEventListener('click', (e)=>{ e.preventDefault(); history.back(); });
+    });
+  </script>
+  <script src="assets/icons.js"></script>
+</body>
+</html>

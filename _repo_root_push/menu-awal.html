@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Menu Utama - SiLantra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-top: #c5dd74;
+        --bg-mid: #86c18d;
+        --bg-bottom: #5b7fb4;
+        --card: #ffffff;
+        --text: #111827;
+        --border: rgba(0,0,0,0.12);
+        --pill-border: #d1d5db;
+        --shadow-sm: 0 4px 10px rgba(0,0,0,0.14);
+        --shadow-md: 0 8px 16px rgba(0,0,0,0.2);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto,
+          Ubuntu, Cantarell, Noto Sans, sans-serif;
+        color: var(--text);
+      }
+      html {
+        background: linear-gradient(
+          180deg,
+          var(--bg-top) 0%,
+          var(--bg-mid) 45%,
+          var(--bg-bottom) 100%
+        );
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      body {
+        background: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+      }
+      .phone {
+        width: 390px;
+        max-width: 100%;
+        min-height: 100vh;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        /* Tambahkan safe area bottom agar tidak tertutup gesture bar */
+        padding-bottom: calc(94px + env(safe-area-inset-bottom, 0px));
+        padding-top: env(safe-area-inset-top, 0px);
+      }
+
+      /* Kartu welcome (disamakan gaya dengan halaman kantor cabang) */
+      .welcome {
+        margin: 12px 0 0; /* lebar penuh kartu header di halaman sebelumnya */
+        padding: 16px 18px 14px;
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+      }
+      .welcome .line1 {
+        font-weight: 800;
+        font-size: 18px;
+      }
+      .welcome .name {
+        color: #2563eb;
+      }
+      .welcome .line2 {
+        margin-top: 6px;
+        color: #334155;
+        font-size: 12px;
+        font-style: italic;
+      }
+
+      /* Daftar kartu layanan */
+      .list {
+        padding: 16px 16px 18px;
+      }
+      .svc {
+        position: relative;
+        display: grid;
+        grid-template-columns: 84px 1fr;
+        gap: 12px;
+        align-items: center;
+        background: var(--card);
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        padding: 14px 14px 16px;
+        margin-bottom: 16px;
+        box-shadow: var(--shadow-sm);
+        cursor: pointer;
+        transition: transform 0.16s ease, box-shadow 0.16s ease;
+      }
+      .svc:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+      }
+      .svc:active {
+        transform: scale(0.99);
+      }
+      @keyframes pop {
+        0% {
+          transform: scale(0.96);
+        }
+        55% {
+          transform: scale(1.05);
+        }
+        85% {
+          transform: scale(0.995);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .svc.clicked {
+        animation: pop 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+
+      .thumb {
+        height: 100%;
+        min-height: 64px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+      }
+      .thumb svg {
+        width: 56px;
+        height: 56px;
+      }
+      .thumb img {
+        width: 56px;
+        height: 56px;
+        object-fit: contain;
+      }
+      /* Khusus Badan Usaha: ukuran ikon 64px dan tanpa background bulat */
+      .svc.teal .thumb img {
+        width: 64px;
+        height: 64px;
+      }
+
+      .meta .title {
+        font-weight: 800;
+        font-size: 18px;
+        letter-spacing: 0.2px;
+      }
+      .meta .desc {
+        margin-top: 4px;
+        font-size: 12px;
+        color: #475569;
+        font-style: italic;
+      }
+
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #ffffff;
+        color: #111827;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.2px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+        margin-top: 10px;
+        transition: transform 0.16s ease, filter 0.2s ease,
+          box-shadow 0.16s ease;
+        border: 1px solid var(--pill-border);
+      }
+      .cta:hover { filter: brightness(1.03); transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.16); }
+      .cta:active { transform: scale(0.98); }
+      .cta.clicked {
+        animation: pop 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+
+      /* Tema warna per kartu */
+      .svc.red {
+        background: linear-gradient(180deg, #ffe4e8, #ffc9d3);
+        border-color: #e11d4860;
+      }
+      .svc.red .thumb {
+        background: #ef4444;
+      }
+      .svc.red .cta {
+        background: linear-gradient(180deg, #ffc7d9, #ff9ab6);
+        border-color: #a70f44;
+      }
+
+      .svc.amber {
+        background: linear-gradient(180deg, #ffebc7, #ffd89b);
+        border-color: #f59e0b60;
+      }
+      .svc.amber .thumb {
+        background: #f59e0b;
+      }
+      .svc.amber .cta {
+        background: linear-gradient(180deg, #ffd9a8, #ffb26a);
+        border-color: #e85d19;
+      }
+
+      .svc.blue {
+        background: linear-gradient(180deg, #dbeafe, #bfdbfe);
+        border-color: #3b82f660;
+      }
+      .svc.blue .thumb {
+        background: #3b82f6;
+      }
+      .svc.blue .cta {
+        background: linear-gradient(180deg, #c7d7ff, #8fb0ff);
+        border-color: #2d5bdd;
+      }
+
+      .svc.teal {
+        background: linear-gradient(180deg, #d1fae5, #a7f3d0);
+        border-color: #14b8a660;
+      }
+      .svc.teal .thumb {
+        background: #16a34a;
+      }
+      .svc.teal .cta {
+        background: linear-gradient(180deg, #bbf7d0, #86efac);
+        border-color: #16a34a;
+      }
+
+      /* Bottom dock (reuse from halaman kantor-cabang) */
+      .bottom-nav-wrap {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+      .bottom-pad {
+        height: 64px;
+        background: transparent;
+      }
+      .bottom-nav {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+        display: flex;
+        justify-content: center;
+      }
+      .dock {
+        display: flex;
+        gap: 24px;
+        background: #d1d5db;
+        padding: 10px 18px;
+        border-radius: 12px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+      }
+      .dock-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        background: #9ca3af;
+        color: #0f172a;
+        transition: transform 0.18s ease, filter 0.2s ease,
+          box-shadow 0.18s ease;
+      }
+      .dock-btn.account{ background:#a7f3d0 }
+      .dock-btn.home{ background:#93c5fd }
+      .dock-btn.back{ background:#6ee7e7 }
+      .dock-btn:hover {
+        filter: brightness(1.05);
+        transform: translateY(-2px);
+      }
+      .dock-btn:active {
+        transform: translateY(0) scale(0.96);
+      }
+      @keyframes dockBounce {
+        0% {
+          transform: translateY(0) scale(1);
+        }
+        40% {
+          transform: translateY(-3px) scale(1.04);
+        }
+        100% {
+          transform: translateY(0) scale(1);
+        }
+      }
+      .dock-btn.clicked {
+        animation: dockBounce 280ms ease-out;
+      }
+      /* Samakan seluruh tombol dock agar tidak ada warna yang menonjol */
+      .dock-btn.green,
+      .dock-btn.teal {
+        background: #9ca3af;
+      }
+      .dock-btn svg {
+        width: 22px;
+        height: 22px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="phone" role="main">
+      <section class="welcome">
+        <div class="line1">
+          Selamat Datang, <span id="userName" class="name">Pengguna</span>
+        </div>
+        <div class="line2">Anda ingin berkunjung kemana hari ini?</div>
+      </section>
+
+      <section class="list">
+        <!-- Faskes Pertama -->
+        <article class="svc red">
+          <div class="thumb">
+            <img src="assets/ICON_PUSKES-removebg-preview 1.png" alt="Puskesmas" />
+          </div>
+          <div class="meta">
+            <div class="title">Faskes Pertama</div>
+            <div class="desc">
+              Pelayanan Kesehatan Tingkat Pertama (Puskesmas, Klinik, dan Dokter
+              Umum Praktek)
+            </div>
+            <button id="btnFaskesPertama" class="cta" type="button">Pilih Antrian</button>
+          </div>
+        </article>
+
+        <!-- Rujukan Pertama -->
+        <article class="svc amber">
+          <div class="thumb">
+            <img src="assets/ICON_RS-removebg-preview 1.png" alt="Rumah Sakit" />
+          </div>
+          <div class="meta">
+            <div class="title">Rujukan Pertama</div>
+            <div class="desc">
+              Pelayanan Kesehatan Tingkat Lanjut (Rumah Sakit)
+            </div>
+            <button id="btnRujukanPertama" class="cta" type="button">Pilih Antrian</button>
+          </div>
+        </article>
+
+        <!-- Kantor Cabang -->
+        <article class="svc blue">
+          <div class="thumb">
+            <img src="assets/ICON_KACAB-removebg-preview 1.png" alt="Kantor Cabang" />
+          </div>
+          <div class="meta">
+            <div class="title">Kantor Cabang</div>
+            <div class="desc">Layanan Administrasi dan Konsultasi</div>
+            <button id="btnKantorCabang" class="cta" type="button">Pilih Antrian</button>
+          </div>
+        </article>
+
+        <!-- Badan Usaha -->
+        <article class="svc teal">
+          <div class="thumb">
+            <img src="assets/ICON_BADAN_USAHA-removebg-preview%201.png" alt="Badan Usaha" />
+          </div>
+          <div class="meta">
+            <div class="title">Badan Usaha</div>
+            <div class="desc">
+              Layanan Administrasi dan Konsultasi Perusahaan
+            </div>
+            <button id="btnBadanUsaha" class="cta" type="button">Pilih Antrian</button>
+          </div>
+        </article>
+      </section>
+
+      <div class="bottom-nav-wrap" aria-hidden="false">
+        <div class="bottom-pad"></div>
+        <nav class="bottom-nav">
+          <div class="dock">
+            <a class="dock-btn account" href="profile.html" title="Akun">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5.33 0-8 2.67-8 6v1h16v-1c0-3.33-2.67-6-8-6Z"
+                  fill="#111827"
+                />
+              </svg>
+            </a>
+            <a class="dock-btn home" href="menu-awal.html" title="Beranda">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"
+                  fill="#0f172a"
+                />
+              </svg>
+            </a>
+            <a class="dock-btn back" href="#" title="Kembali">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M14 7l-5 5 5 5"
+                  stroke="#0f172a"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </a>
+          </div>
+        </nav>
+      </div>
+    </main>
+
+    <script>
+      // Ambil nama dari query string (?user=...) atau dari localStorage('username')
+      const params = new URLSearchParams(location.search);
+      const nameFromQuery = params.get("user");
+      const nameFromStorage = localStorage.getItem("username");
+      const name =
+        (nameFromQuery && nameFromQuery.trim()) ||
+        (nameFromStorage && nameFromStorage.trim()) ||
+        "Pengguna";
+      document.getElementById("userName").textContent = name;
+
+      // Animasi klik untuk kartu dan tombol
+      document.querySelectorAll(".svc").forEach((card) => {
+        card.addEventListener("click", () => {
+          card.classList.remove("clicked");
+          void card.offsetWidth;
+          card.classList.add("clicked");
+        });
+      });
+      document.querySelectorAll(".cta").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          btn.classList.remove("clicked");
+          void btn.offsetWidth;
+          btn.classList.add("clicked");
+        });
+      });
+
+      // Routing sesuai permintaan
+      const go = (el, url)=>{ if(!el) return; el.addEventListener('click', ()=> setTimeout(()=>{ window.location.href = url; }, 220)); };
+      // Faskes Pertama (PU) -> form-fktp.html
+      go(document.getElementById('btnFaskesPertama'), 'form-fktp.html');
+      // Rujukan Pertama (RS) -> form-fkrtl.html
+      go(document.getElementById('btnRujukanPertama'), 'form-fkrtl.html');
+      go(document.getElementById('btnKantorCabang'), 'pilih-kantor-cabang.html');
+      go(document.getElementById('btnBadanUsaha'), 'antrian-badan-usaha.html');
+
+      // Animasi dock
+      document.querySelectorAll(".dock-btn").forEach((el) => {
+        el.addEventListener("click", () => {
+          el.classList.remove("clicked");
+          void el.offsetWidth;
+          el.classList.add("clicked");
+        });
+      });
+      // Back handler
+      document.querySelectorAll('.dock-btn.back').forEach(a=>{
+        a.addEventListener('click', (e)=>{ e.preventDefault(); history.back(); });
+      });
+    </script>
+    <script src="assets/icons.js"></script>
+  </body>
+</html>

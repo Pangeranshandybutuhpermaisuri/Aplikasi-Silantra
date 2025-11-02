@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Registrasi Peserta - SiLantra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-top: #c5dd74;
+        --bg-mid: #86c18d;
+        --bg-bottom: #5b7fb4;
+        --card: #ffffff;
+        --text: #1f2937;
+        --muted: #6b7280; /* abu */
+        --accent-1: #7c3aed; /* ungu */
+        --accent-2: #ef4444; /* merah */
+        --btn-1: #4f46e5; /* indigo */
+        --btn-2: #ef4444; /* merah */
+        --footer: #3f5f8f; /* biru tua */
+        --footer-sub: #ffce7a; /* keemasan */
+        --radius: 24px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto,
+          Ubuntu, Cantarell, Noto Sans, sans-serif;
+        color: var(--text);
+      }
+      html {
+        background: linear-gradient(
+          180deg,
+          var(--bg-top) 0%,
+          var(--bg-mid) 45%,
+          var(--bg-bottom) 100%
+        );
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      body {
+        background: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+      }
+      .phone {
+        width: 390px;
+        max-width: 100%;
+        min-height: 100vh;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: 12px 14px 80px;
+      }
+      /* Header / Logo */
+      .logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        margin-top: 0;
+        margin-bottom: 0;
+        user-select: none;
+      }
+      .logo-mark {
+        width: 84px;
+        height: 84px;
+        display: grid;
+        place-items: center;
+        background: transparent;
+        border-radius: 12px;
+        box-shadow: none;
+      }
+      .logo-mark img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        image-rendering: auto;
+      }
+      .logo-text {
+        display: none;
+      }
+      .logo-title {
+        text-align: center;
+        line-height: 1.1;
+        margin-top: 2px;
+      }
+      .logo-title .bpjs { color: #1d4ed8; font-weight: 800; font-size: 24px; }
+      .logo-title .kesehatan { color: #16a34a; font-weight: 800; font-size: 24px; }
+      .logo-subtitle { color: #1d4ed8; font-weight: 400; font-size: 12px; margin-top: 4px; }
+
+      /* Headings */
+      .headline {
+        text-align: center;
+        margin: 0 0 6px;
+      }
+      .headline .h1 {
+        font-weight: 800;
+        font-size: 20px;
+        letter-spacing: 0.3px;
+      }
+      .headline .h2 {
+        margin-top: 2px;
+        font-weight: 800;
+        font-size: 22px;
+        letter-spacing: 0.4px;
+        background: linear-gradient(90deg, #6d28d9, #e11d48);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .subhead {
+        text-align: center;
+        font-size: 12px;
+        color: #475569;
+        letter-spacing: 0.6px;
+        margin-top: 6px;
+      }
+
+      /* Card form */
+      .card {
+        margin-top: 18px;
+        background: var(--card);
+        border-radius: var(--radius);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        padding: 18px 16px 22px;
+      }
+      .field {
+        margin-bottom: 14px;
+      }
+      .label {
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+      .input {
+        width: 100%;
+        border: 3px solid #e5e7eb;
+        outline: none;
+        background: #f7f7f9;
+        color: #111827;
+        padding: 14px 14px;
+        border-radius: 14px;
+        box-shadow: 0 2px 0 rgba(0, 0, 0, 0.04) inset,
+          0 3px 8px rgba(0, 0, 0, 0.08);
+        font-size: 14px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease,
+          transform 0.12s ease;
+      }
+      .input::placeholder {
+        color: #9ba3af;
+        letter-spacing: 0.4px;
+      }
+      .input:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15),
+          0 3px 8px rgba(0, 0, 0, 0.08);
+      }
+      @keyframes inputPulse {
+        0% {
+          transform: scale(1);
+        }
+        40% {
+          transform: scale(1.01);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .input.typing {
+        animation: inputPulse 300ms ease-out;
+      }
+      .hint {
+        margin-top: 8px;
+        margin-left: 8px;
+        font-size: 12px;
+        color: #6b7280;
+        font-style: italic;
+      }
+      .hint .name-value {
+        font-weight: 600;
+        color: #374151;
+        font-style: normal;
+      }
+
+      .btn {
+        width: 100%;
+        margin-top: 4px;
+        padding: 14px 16px;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #4338ca, #e11d48, #f97316);
+        color: white;
+        font-weight: 800;
+        letter-spacing: 1.4px;
+        font-size: 20px;
+        box-shadow: 0 10px 24px rgba(225, 29, 72, 0.35);
+        transition: transform 0.12s ease, box-shadow 0.12s ease,
+          filter 0.2s ease;
+      }
+      .btn:hover {
+        filter: brightness(1.02);
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      @keyframes btnPop {
+        0% {
+          transform: scale(0.98);
+        }
+        70% {
+          transform: scale(1.02);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .btn.clicked {
+        animation: btnPop 220ms ease-out;
+      }
+
+      /* Footer */
+      .footer {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: transparent;
+        padding: 14px 18px 16px;
+        text-align: center;
+        color: #e2eaf6;
+      }
+      .footer .l1 {
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 0.8px;
+      }
+      .footer .l2 {
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 0.6px;
+        color: #f0c56e;
+        margin-top: 4px;
+      }
+
+      /* Responsif kecil */
+      @media (max-width: 360px) {
+        .phone {
+          padding: 24px 14px 94px;
+        }
+        .headline .h1 {
+          font-size: 18px;
+        }
+        .headline .h2 {
+          font-size: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="phone" role="main">
+      <section class="logo" aria-label="Brand">
+        <div class="logo-mark" aria-hidden="true">
+          <img
+            src="assets/icon_bpjs-removebg-preview.png"
+            alt="BPJS Kesehatan"
+            decoding="async"
+            loading="eager"
+          />
+        </div>
+        <div class="logo-title" aria-hidden="false">
+          <span class="bpjs">BPJS</span>
+          <span class="kesehatan">Kesehatan</span>
+          <div class="logo-subtitle">Badan Penyelenggara Jaminan Sosial</div>
+        </div>
+      </section>
+
+      <section class="headline">
+        <div class="h1">DENGAN GOTONG ROYONG,</div>
+        <div class="h2">SEMUA TERTOLONG</div>
+        <div class="subhead">
+          SILAHKAN REGISTRASI UNTUK MELANJUTKAN PELAYANAN
+        </div>
+      </section>
+
+      <section class="card" aria-label="Form Registrasi">
+        <div class="field">
+          <div class="label">NIK</div>
+          <input
+            id="nik"
+            class="input"
+            inputmode="numeric"
+            maxlength="16"
+            pattern="\d{16}"
+            autocomplete="off"
+            placeholder="MASUKKAN NOMOR NIK"
+            aria-describedby="nama-peserta"
+          />
+          <div id="nama-peserta" class="hint" aria-live="polite"></div>
+        </div>
+
+        <div class="field">
+          <div class="label">Username</div>
+          <input id="username" class="input" placeholder="MASUKKAN USERNAME" />
+        </div>
+
+        <div class="field">
+          <div class="label">No Telepon</div>
+          <input
+            id="phone"
+            class="input"
+            inputmode="tel"
+            placeholder="MASUKKAN NOMOR TELEPON"
+          />
+        </div>
+
+        <div class="field">
+          <div class="label">Password</div>
+          <div style="position: relative">
+            <input
+              id="password"
+              class="input"
+              type="password"
+              placeholder="MASUKKAN PASSWORD"
+              style="padding-right: 44px"
+            />
+            <button
+              id="togglePwd"
+              type="button"
+              aria-label="Tampilkan password"
+              aria-pressed="false"
+              style="
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: transparent;
+                border: none;
+                padding: 6px;
+                border-radius: 8px;
+                cursor: pointer;
+                display: grid;
+                place-items: center;
+              "
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"
+                  stroke="#6b7280"
+                  stroke-width="2"
+                  fill="none"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="3"
+                  stroke="#6b7280"
+                  stroke-width="2"
+                  fill="none"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">Konfirmasi Password</div>
+          <div style="position: relative">
+            <input
+              id="password2"
+              class="input"
+              type="password"
+              placeholder="MASUKKAN KEMBALI PASSWORD"
+              style="padding-right: 44px"
+            />
+            <button
+              id="togglePwd2"
+              type="button"
+              aria-label="Tampilkan password"
+              aria-pressed="false"
+              style="
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: transparent;
+                border: none;
+                padding: 6px;
+                border-radius: 8px;
+                cursor: pointer;
+                display: grid;
+                place-items: center;
+              "
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"
+                  stroke="#6b7280"
+                  stroke-width="2"
+                  fill="none"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="3"
+                  stroke="#6b7280"
+                  stroke-width="2"
+                  fill="none"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <button class="btn" type="button">DAFTAR</button>
+        <div
+          class="helper"
+          style="
+            margin-top: 8px;
+            margin-left: 6px;
+            font-size: 12px;
+            color: #6b7280;
+          "
+        >
+          Sudah punya akun?
+          <a
+            href="login.html"
+            style="color: #2563eb; text-decoration: underline"
+            >Login disini</a
+          >
+        </div>
+      </section>
+
+      <footer class="footer" aria-label="Informasi Sistem">
+        <div class="l1">SISTEM ANTRIAN LAYANAN PESERTA (SILANTRA)</div>
+        <div class="l2">BPJS KESEHATAN - PELAYANAN TERPERCAYA</div>
+      </footer>
+    </main>
+
+    <script>
+      const nikInput = document.getElementById("nik");
+      const hint = document.getElementById("nama-peserta");
+      const username = document.getElementById("username");
+      const phone = document.getElementById("phone");
+      const pwd = document.getElementById("password");
+      const pwd2 = document.getElementById("password2");
+      const btn = document.querySelector(".btn");
+      const togglePwd = document.getElementById("togglePwd");
+      const togglePwd2 = document.getElementById("togglePwd2");
+
+      const formatNama = (nama) =>
+        nama ? `Nama peserta : <span class="name-value">${nama}</span>` : "";
+
+      async function fetchNamaByNIK(nik) {
+        if (!nik) {
+          hint.innerHTML = "";
+          return;
+        }
+        hint.innerHTML = "Mencari...";
+        try {
+          const controller = new AbortController();
+          const t = setTimeout(() => controller.abort(), 7000);
+          const res = await fetch(
+            `api/nik_lookup.php?nik=${encodeURIComponent(nik)}&_=${Date.now()}`,
+            { signal: controller.signal }
+          );
+          clearTimeout(t);
+          if (!res.ok) {
+            if(res.status === 405){
+              hint.innerHTML = 'Nama peserta : - (405: jalankan via server PHP)';
+            } else {
+              hint.innerHTML = 'Nama peserta : -';
+            }
+            return;
+          }
+          const data = await res.json();
+          if (data && data.found && data.user) {
+            const u = data.user;
+            const nama = (
+              u.full_name ||
+              u.nama ||
+              u.name ||
+              u.NAMA ||
+              u.NamaLengkap ||
+              u.nama_peserta ||
+              u.NAMA_PESERTA ||
+              u.nm_peserta ||
+              u.fullname ||
+              ""
+            ).toString();
+            hint.innerHTML = nama ? formatNama(nama) : "Nama peserta : -";
+            try {
+              localStorage.setItem("peserta_nama", nama);
+            } catch {}
+          } else {
+            hint.innerHTML = "Nama peserta : -";
+          }
+        } catch (e) {
+          if (location.protocol === "file:") {
+            hint.innerHTML = "Nama peserta : - (butuh server)";
+            return;
+          }
+          hint.innerHTML = "Nama peserta : -";
+        }
+      }
+
+      let nikDebounce;
+      nikInput.addEventListener("input", () => {
+        nikInput.value = (nikInput.value || "").replace(/\D/g, "");
+        clearTimeout(nikDebounce);
+        const nikVal = nikInput.value || "";
+        if (nikVal.length < 16) {
+          hint.innerHTML = "";
+          return;
+        }
+        nikDebounce = setTimeout(() => fetchNamaByNIK(nikVal), 300);
+      });
+
+      // Animasi input saat mengetik
+      const bounceTyping = (el) => {
+        el.classList.remove("typing");
+        // reflow agar animasi bisa diulang
+        void el.offsetWidth;
+        el.classList.add("typing");
+      };
+      [nikInput, username, phone, pwd, pwd2].forEach((el) => {
+        el.addEventListener("input", () => bounceTyping(el));
+        el.addEventListener("animationend", () =>
+          el.classList.remove("typing")
+        );
+      });
+
+      // Toggle lihat/sembunyi password
+      const eyeSvg = () =>
+        `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z" stroke="#6b7280" stroke-width="2" fill="none"/>
+        <circle cx="12" cy="12" r="3" stroke="#6b7280" stroke-width="2" fill="none"/>
+      </svg>`;
+      const eyeOffSvg = () =>
+        `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z" stroke="#6b7280" stroke-width="2" fill="none"/>
+        <path d="M4 4l16 16" stroke="#6b7280" stroke-width="2" stroke-linecap="round"/>
+      </svg>`;
+      function setupToggle(button, input) {
+        if (!button || !input) return;
+        button.addEventListener("click", () => {
+          const isPass = input.type === "password";
+          input.type = isPass ? "text" : "password";
+          button.innerHTML = isPass ? eyeOffSvg() : eyeSvg();
+          button.setAttribute("aria-pressed", String(isPass));
+          button.setAttribute(
+            "aria-label",
+            isPass ? "Sembunyikan password" : "Tampilkan password"
+          );
+        });
+      }
+      setupToggle(togglePwd, pwd);
+      setupToggle(togglePwd2, pwd2);
+
+      // Validasi dan animasi tombol saat klik
+      btn.addEventListener("click", async () => {
+        const nik = (nikInput.value || "").replace(/\D/g, "");
+        const uname = (username.value || "").trim();
+        const tel = (phone.value || "").trim();
+        const pass1 = pwd.value || "";
+        const pass2 = pwd2.value || "";
+
+        if (nik.length !== 16) {
+          alert("NIK harus 16 digit angka.");
+          nikInput.focus();
+          return;
+        }
+        if (!uname) {
+          alert("Username tidak boleh kosong.");
+          username.focus();
+          return;
+        }
+        if (!/^\+?\d{8,15}$/.test(tel)) {
+          alert("No Telepon harus berupa angka (8-15 digit), boleh diawali +.");
+          phone.focus();
+          return;
+        }
+        if (pass1.length < 6) {
+          alert("Password minimal 6 karakter.");
+          pwd.focus();
+          return;
+        }
+        if (pass1 !== pass2) {
+          alert("Konfirmasi password tidak sama.");
+          pwd2.focus();
+          return;
+        }
+
+        btn.classList.remove("clicked");
+        void btn.offsetWidth;
+        btn.classList.add("clicked");
+
+        try {
+          const form = new URLSearchParams();
+          form.set("nik", nik);
+          // Biarkan backend fallback ke DB jika kosong
+          form.set("full_name", "");
+          form.set("username", uname);
+          form.set("phone", tel);
+          form.set("email", "");
+          form.set("password", pass1);
+          const controller = new AbortController();
+          const t = setTimeout(() => controller.abort(), 10000);
+          const res = await fetch("api/register.php", {
+            method: "POST",
+            body: form,
+            signal: controller.signal,
+          });
+          clearTimeout(t);
+          if (!res.ok) {
+            if(res.status === 405){
+              alert('Registrasi gagal: 405 (server statis). Jalankan via server PHP, misalnya:\nphp -S localhost:8000 -t .');
+            } else {
+              let msg = 'http ' + res.status;
+              try { const j = await res.json(); msg = j.error || msg; } catch {}
+              alert('Registrasi gagal: ' + msg);
+            }
+            return;
+          }
+          const data = await res.json();
+          if (!data.success) {
+            alert("Registrasi gagal: " + (data.error || "unknown"));
+            return;
+          }
+          try {
+            localStorage.setItem("registered_at", new Date().toISOString());
+            localStorage.setItem("nik", nik);
+            localStorage.setItem("reg_username", uname);
+            localStorage.setItem("reg_phone", tel);
+            if (data.user) {
+              const u = data.user;
+              const nama = (
+                u.full_name ||
+                u.nama ||
+                u.name ||
+                u.NamaLengkap ||
+                ""
+              ).toString();
+              if (nama) {
+                localStorage.setItem("peserta_nama", nama);
+              }
+            }
+          } catch {}
+          setTimeout(() => {
+            window.location.href = "login.html";
+          }, 220);
+        } catch (e) {
+          if (location.protocol === "file:") {
+            alert(
+              "Form tidak bisa menghubungi server. Jalankan via server (mis. http://localhost/) lalu coba lagi."
+            );
+            return;
+          }
+          alert("Terjadi kesalahan jaringan. Coba lagi.");
+        }
+      });
+    </script>
+  </body>
+</html>

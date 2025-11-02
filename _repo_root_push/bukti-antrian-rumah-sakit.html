@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bukti Antrian Rumah Sakit - SiLantra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{ --bg-top:#c5dd74; --bg-mid:#86c18d; --bg-bottom:#5b7fb4; --card:#ffffff; --text:#111827 }
+    *{ box-sizing:border-box }
+    html,body{ height:100%; margin:0; font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif; color:var(--text) }
+    html{ background:linear-gradient(180deg,var(--bg-top) 0%, var(--bg-mid) 45%, var(--bg-bottom) 100%); background-attachment:fixed; background-repeat:no-repeat; background-size:cover }
+    body{ background:transparent; display:flex; justify-content:center; align-items:flex-start }
+    .phone{ width:390px; max-width:100%; min-height:100vh; position:relative; display:flex; flex-direction:column; padding-bottom:94px }
+
+    /* Banner sukses */
+    .banner{ background:linear-gradient(180deg,#1e40af,#3b82f6); padding:22px 18px 16px; text-align:center; border:1px solid rgba(0,0,0,.12); border-radius:18px; margin:12px 18px 0 }
+    .badge{ display:grid; place-items:center; margin:0 auto 8px; position:relative }
+    .badge img{ width:84px; height:84px; object-fit:contain; filter: drop-shadow(0 2px 2px rgba(0,0,0,.15)); animation: badgePop .32s ease-out, badgePulse 2.4s ease-in-out .32s infinite }
+    .badge svg{ width:84px; height:84px; animation: badgePop .32s ease-out, badgePulse 2.4s ease-in-out .32s infinite }
+    @keyframes badgePop{0%{transform:scale(.6); opacity:.0} 60%{transform:scale(1.1); opacity:1} 100%{transform:scale(1)}}
+    @keyframes badgePulse{0%,100%{transform:scale(1)} 50%{transform:scale(1.06)}}
+    .banner-title{ font-weight:800; letter-spacing:.3px; color:#111827 }
+
+    /* Kartu umum */
+    .wrap{ padding:18px }
+    .cta{ display:flex; width:100%; align-items:center; justify-content:center; padding:14px 18px; border-radius:16px; color:#111827; font-weight:800; letter-spacing:.4px; margin-top:12px; background:linear-gradient(135deg,#4338ca,#e11d48,#f97316); border:none; box-shadow:0 10px 16px rgba(0,0,0,.24); transition: transform .16s ease, filter .2s ease, box-shadow .16s ease }
+    #savePdf{ margin-top:8px }
+    .cta:active{ transform: scale(.98) }
+    .card{ background:var(--card); border-radius:18px; border:1px solid rgba(0,0,0,.12); box-shadow:0 6px 14px rgba(0,0,0,.18); padding:16px; margin-bottom:16px }
+    .title{ font-weight:800 }
+
+    /* Kartu tiket utama */
+    .ticket{ text-align:center }
+    .ticket .label{ font-weight:800; letter-spacing:.2px; margin-bottom:6px }
+    .ticket .number{ font-weight:900; font-size:44px; letter-spacing:2px }
+    .ticket .eta{ margin-top:6px; font-weight:700; color:#1f2937 }
+
+    /* Grid detail */
+    .detail .row{ display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-bottom:1px dashed rgba(0,0,0,.12) }
+    .detail .row:last-child{ border-bottom:none }
+    .detail .left{ color:#475569; font-weight:600; font-size:12px }
+    .detail .right{ font-weight:800; font-size:12px }
+
+    .image-box{ background:#f8fafc; border:1px solid rgba(0,0,0,.08); border-radius:12px; padding:12px; min-height:140px; display:grid; place-items:center; position:relative }
+    .image-box img{ max-width:100%; border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,.12) }
+    .zoom-fab{ position:absolute; right:10px; bottom:10px; width:38px; height:38px; border-radius:999px; background:rgba(0,0,0,.65); color:#ffffff; border:1px solid rgba(255,255,255,.5); display:grid; place-items:center; box-shadow:0 8px 16px rgba(0,0,0,.25); transition: transform .12s ease, filter .2s ease }
+    .zoom-fab:hover{ filter:brightness(1.05); transform: translateY(-1px) }
+    .zoom-fab:active{ transform: scale(.96) }
+    .zoom-fab:disabled{ opacity:.5; filter:grayscale(30%); cursor:default }
+    .zoom-fab svg{ width:20px; height:20px }
+    .overlay{ position:fixed; inset:0; background:rgba(0,0,0,.7); display:none; align-items:center; justify-content:center; z-index:1000 }
+    .overlay img{ max-width:92vw; max-height:92vh; border-radius:12px; box-shadow:0 10px 22px rgba(0,0,0,.4) }
+
+    .info ul{ margin:8px 0 0 18px; padding:0 }
+    .info li{ margin:6px 0; font-size:12px }
+
+    /* Bottom dock */
+    .bottom-nav-wrap{ position:fixed; left:0; right:0; bottom:0 }
+    .bottom-pad{ height:64px; background:transparent }
+    .bottom-nav{ position:absolute; left:0; right:0; bottom:10px; display:flex; justify-content:center }
+    .dock{ display:flex; gap:24px; background:#d1d5db; padding:10px 18px; border-radius:12px; box-shadow:0 6px 16px rgba(0,0,0,.25) }
+    .dock-btn{ width:44px; height:44px; border-radius:10px; display:grid; place-items:center; background:#9ca3af; color:#0f172a; transition: transform .18s ease, filter .2s ease, box-shadow .18s ease }
+    .dock-btn:hover{ filter: brightness(1.05); transform: translateY(-2px) }
+    .dock-btn:active{ transform: translateY(0) scale(.96) }
+    @keyframes dockBounce{0%{transform:translateY(0) scale(1)}40%{transform:translateY(-3px) scale(1.04)}100%{transform:translateY(0) scale(1)}}
+    .dock-btn.clicked{ animation: dockBounce 280ms ease-out }
+    .dock-btn.account{ background:#a7f3d0 }
+    .dock-btn.home{ background:#93c5fd }
+    .dock-btn.back{ background:#6ee7e7 }
+    .dock-btn svg{ width:22px; height:22px }
+  </style>
+</head>
+<body>
+  <main class="phone" role="main">
+    <section class="banner">
+      <div class="badge">
+        <img id="checkBadgeImg" alt="verified" style="display:none" />
+        <svg id="checkBadgeSvg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 7l-9 9-4-4" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="banner-title">ANTRIAN BERHASIL DIBUAT</div>
+    </section>
+
+
+    <section class="wrap">
+      <div class="card ticket">
+        <div class="label">NOMOR ANTRIAN ANDA</div>
+        <div class="number" id="queueNumber">RS01</div>
+        <div class="eta" id="eta">ESTIMASI DILAYANI 00:00</div>
+      </div>
+
+      <div class="card detail">
+        <div class="row"><div class="left">JENIS PELAYANAN</div><div class="right" id="jenis">POLI UMUM</div></div>
+        <div class="row"><div class="left">NAMA LENGKAP</div><div class="right" id="nama">-</div></div>
+        <div class="row"><div class="left">NO.BPJS</div><div class="right" id="bpjs">-</div></div>
+        <div class="row"><div class="left">NAMA DOKTER</div><div class="right" id="dokter">-</div></div>
+        <div class="row"><div class="left">NO.TELEPON</div><div class="right" id="hp">-</div></div>
+        <div class="row"><div class="left">TANGGAL KUNJUNGAN</div><div class="right" id="tgl">-</div></div>
+      </div>
+
+      <div class="card">
+        <div class="title">FOTO SURAT RUJUKAN</div>
+        <div class="image-box">
+          <img id="rujukanImg" alt="Surat Rujukan" src="" onerror="this.style.display='none'" />
+          <div id="rujukanEmpty" class="dropbox-hint">Tidak ada gambar</div>
+          <button id="zoomBtn" class="zoom-fab" type="button" title="Perbesar" aria-label="Perbesar">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14M5 12h14" stroke="#ffffff" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="card info">
+        <div class="title">INFORMASI PENTING!</div>
+        <ul>
+          <li>Tiba 15 menit sebelum waktu pelayanan</li>
+          <li>Membawa KTP atau kartu BPJS</li>
+          <li>Tunjukkan tiket ini kepada petugas</li>
+        </ul>
+      </div>
+      <button id="savePdf" class="cta" type="button">Simpan PDF</button>
+
+    <div class="bottom-nav-wrap" aria-hidden="false">
+      <div class="bottom-pad"></div>
+      <nav class="bottom-nav">
+        <div class="dock">
+          <a class="dock-btn account" href="profile.html" title="Akun">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5.33 0-8 2.67-8 6v1h16v-1c0-3.33-2.67-6-8-6Z" fill="#111827"/></svg>
+          </a>
+          <a class="dock-btn home" href="menu-awal.html" title="Beranda">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z" fill="#0f172a"/></svg>
+          </a>
+          <a class="dock-btn back" href="#" title="Kembali">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 7l-5 5 5 5" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </main>
+
+  <script>
+    const qs = new URLSearchParams(location.search);
+    const get = (k, ls) => qs.get(k) || localStorage.getItem(ls) || '-';
+    let last = {}; try{ last = JSON.parse(localStorage.getItem('last_ticket')||'{}') || {}; }catch{}
+    const extra = (()=>{ try{ return last.extra_json ? (typeof last.extra_json === 'string' ? JSON.parse(last.extra_json) : last.extra_json) : {}; }catch(e){ return {}; } })();
+
+    const data = {
+      ticket_number: last.ticket_number || '',
+      jenis: get('jenis','rs_jenis') || 'POLI UMUM',
+      nama: last.full_name || extra.full_name || get('nama','rs_nama'),
+      bpjs: extra.bpjs || get('bpjs','rs_bpjs'),
+      dokter: extra.dokter || get('dokter','rs_dokter'),
+      hp: last.phone || extra.phone || get('hp','rs_hp'),
+      tgl: extra.tgl || get('tgl','rs_tgl'),
+      rujukan: qs.get('rujukan') || localStorage.getItem('rs_rujukan') || ''
+    };
+
+    document.getElementById('jenis').textContent = data.jenis;
+    document.getElementById('nama').textContent = data.nama;
+    document.getElementById('bpjs').textContent = data.bpjs;
+    document.getElementById('dokter').textContent = data.dokter;
+    document.getElementById('hp').textContent = data.hp;
+    document.getElementById('tgl').textContent = data.tgl;
+
+    const img = document.getElementById('rujukanImg');
+    const empty = document.getElementById('rujukanEmpty');
+    const zoomBtn = document.getElementById('zoomBtn');
+    if(data.rujukan){ img.src = data.rujukan; empty.style.display='none'; zoomBtn.disabled = false; zoomBtn.style.opacity = '1'; }
+    else { if(zoomBtn){ zoomBtn.disabled = true; zoomBtn.style.opacity = '.6'; } }
+
+    if (data.ticket_number) {
+      document.getElementById('queueNumber').textContent = data.ticket_number;
+    } else {
+      // Nomor antrian RS auto-increment fallback
+      const key = 'rs_counter';
+      let n = parseInt(localStorage.getItem(key) || '0', 10); n += 1; localStorage.setItem(key, String(n));
+      document.getElementById('queueNumber').textContent = 'RS' + String(n).padStart(2,'0');
+    }
+
+    // Estimasi dilayani = waktu sekarang (sesuai sebelumnya)
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    document.getElementById('eta').textContent = `ESTIMASI DILAYANI ${hh}:${mm}`;
+
+    // Overlay zoom handler
+    const overlay = document.createElement('div');
+    overlay.id = 'imgOverlay';
+    overlay.className = 'overlay';
+    overlay.innerHTML = '<img id="overlayImg" alt="Surat Rujukan" />';
+    document.body.appendChild(overlay);
+    const overlayImg = overlay.querySelector('#overlayImg');
+    if(zoomBtn){
+      zoomBtn.addEventListener('click', ()=>{
+        if(!img || !img.src) return;
+        overlayImg.src = img.src;
+        overlay.style.display = 'flex';
+      });
+    }
+    overlay.addEventListener('click', ()=>{ overlay.style.display='none'; });
+    window.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ overlay.style.display='none'; } });
+
+    // Animasi dock dan handler Back
+    document.querySelectorAll('.dock-btn').forEach(el=>{
+      el.addEventListener('click', ()=>{ el.classList.remove('clicked'); void el.offsetWidth; el.classList.add('clicked'); });
+    });
+    document.querySelectorAll('.dock-btn.back').forEach(a=>{
+      a.addEventListener('click', (e)=>{ e.preventDefault(); history.back(); });
+    });
+    // Simpan PDF
+    const saveBtn = document.getElementById('savePdf');
+    if(saveBtn){ saveBtn.addEventListener('click', ()=>{ window.print(); }); }
+  </script>
+  <script>
+    window.CheckIcon = 'assets/CHECK-removebg-preview 1.png';
+    (function(){
+      const img = document.getElementById('checkBadgeImg');
+      const svg = document.getElementById('checkBadgeSvg');
+      if(!img||!svg) return;
+      const candidate = window.CheckIcon || 'assets/check.png';
+      const test = new Image();
+      test.onload = function(){ img.src = candidate; img.style.display='block'; svg.style.display='none'; };
+      test.onerror = function(){ img.remove(); svg.style.display='block'; };
+      test.src = candidate;
+    })();
+  </script>
+  <script src="assets/icons.js"></script>
+</body>
+</html>

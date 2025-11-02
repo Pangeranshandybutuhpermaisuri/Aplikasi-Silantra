@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tempat Pengumpulan Berkas - SiLantra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{ --bg-top:#c5dd74; --bg-mid:#86c18d; --bg-bottom:#5b7fb4; --card:#ffffff; --text:#111827 }
+    *{ box-sizing:border-box }
+    html,body{ height:100%; margin:0; font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif; color:var(--text) }
+    html{ background:linear-gradient(180deg,var(--bg-top) 0%, var(--bg-mid) 45%, var(--bg-bottom) 100%); background-attachment:fixed; background-repeat:no-repeat; background-size:cover }
+    body{ background:transparent; display:flex; justify-content:center; align-items:flex-start }
+    .phone{ width:390px; max-width:100%; min-height:100vh; position:relative; display:flex; flex-direction:column; padding-bottom:94px }
+
+    /* Header card */
+    .header-card{ margin:12px 0 0; padding:14px 18px 12px; background:#ffffff; border:1px solid rgba(0,0,0,.12); border-radius:18px }
+    .header-card .title{ font-weight:800; font-size:20px }
+    .header-card .subtitle{ margin-top:6px; color:#334155; font-size:12px; font-style:italic }
+
+    /* Card area */
+    .wrap{ padding:18px }
+    .card{ background:var(--card); border-radius:18px; border:1px solid rgba(0,0,0,.12); box-shadow:0 6px 14px rgba(0,0,0,.18); padding:16px }
+    @keyframes pop{ 0%{transform:scale(.96)} 55%{transform:scale(1.05)} 85%{transform:scale(.995)} 100%{transform:scale(1)} }
+    .clicked{ animation: pop 260ms cubic-bezier(.2,.8,.2,1) }
+
+    .label{ font-weight:800; font-size:14px; margin-bottom:10px }
+
+    /* Dropbox */
+    .dropbox{
+      position:relative; border:2px dashed #94a3b8; border-radius:14px; background:#f1f5f9; padding:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; cursor:pointer; transition:border-color .2s ease, background .2s ease, transform .12s ease;
+    }
+    .dropbox:hover{ background:#eef2f7 }
+    .dropbox.dragover{ border-color:#6366f1; background:#eef2ff; box-shadow:0 0 0 4px rgba(99,102,241,.15) }
+    .dropbox-icon{ width:42px; height:42px; border-radius:10px; background:#93c5fd; display:grid; place-items:center; box-shadow:0 6px 10px rgba(0,0,0,.12) }
+    .dropbox-icon svg{ width:24px; height:24px }
+    .dropbox-hint{ font-size:12px; color:#475569; text-align:center }
+    .file-input{ position:absolute; inset:0; opacity:0; cursor:pointer }
+
+    .file-list{ margin-top:12px; display:flex; flex-direction:column; gap:8px; max-height:160px; overflow:auto }
+    .file-item{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; border:1px solid rgba(0,0,0,.08); background:#fff; border-radius:10px; box-shadow:0 3px 8px rgba(0,0,0,.08) }
+    .file-name{ font-size:12px; color:#0f172a; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1 }
+    .remove-btn{ display:grid; place-items:center; width:28px; height:28px; border-radius:8px; background:#fecaca; color:#7f1d1d; border:1px solid #fca5a5; cursor:pointer; transition:transform .12s ease, filter .2s ease }
+    .remove-btn:hover{ filter:brightness(1.03); transform:translateY(-1px) }
+
+    .cta{ display:flex; width:100%; align-items:center; justify-content:center; padding:16px 20px; border-radius:18px; color:#111827; font-weight:800; font-size:18px; letter-spacing:.3px; margin-top:14px; background:linear-gradient(135deg,#4338ca,#e11d48,#f97316); border:none; box-shadow:0 10px 16px rgba(0,0,0,.24); transition: transform .16s ease, filter .2s ease, box-shadow .16s ease; text-align:center }
+    .cta:hover{ filter:brightness(1.03); transform: translateY(-1px) scale(1.01); box-shadow:0 10px 16px rgba(0,0,0,.24) }
+    .cta:active{ transform: scale(.98) }
+
+    /* Bottom dock (warna sama, tidak abu-abu) */
+    .bottom-nav-wrap{ position:fixed; left:0; right:0; bottom:0 }
+    .bottom-pad{ height:64px; background:transparent }
+    .bottom-nav{ position:absolute; left:0; right:0; bottom:10px; display:flex; justify-content:center }
+    .dock{ display:flex; gap:24px; background:#d1d5db; padding:10px 18px; border-radius:12px; box-shadow:0 6px 16px rgba(0,0,0,.25) }
+    .dock-btn{ width:44px; height:44px; border-radius:10px; display:grid; place-items:center; background:#9ca3af; color:#0f172a; transition: transform .18s ease, filter .2s ease, box-shadow .18s ease }
+    .dock-btn:hover{ filter:brightness(1.05); transform: translateY(-2px) }
+    .dock-btn:active{ transform: translateY(0) scale(.96) }
+    @keyframes dockBounce{ 0%{transform:translateY(0) scale(1)} 40%{transform:translateY(-3px) scale(1.04)} 100%{transform:translateY(0) scale(1)} }
+    .dock-btn.clicked{ animation: dockBounce 280ms ease-out }
+    .dock-btn.account{ background:#a7f3d0 }
+    .dock-btn.home{ background:#93c5fd }
+    .dock-btn.back{ background:#6ee7e7 }
+    .dock-btn svg{ width:22px; height:22px }
+  </style>
+</head>
+<body>
+  <main class="phone" role="main">
+    <section class="header-card">
+      <div class="title">Tempat Pengumpulan Berkas</div>
+      <div class="subtitle">Silahkan unggah berkas Anda pada area di bawah ini.</div>
+    </section>
+
+    <section class="wrap">
+      <div class="card">
+        <div class="label">Dropbox Pengumpulan Berkas</div>
+        <div id="dropbox" class="dropbox">
+          <div class="dropbox-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v12m0-12l-4 4m4-4l4 4" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="dropbox-hint">Tarik & letakkan berkas ke sini atau klik untuk memilih</div>
+          <input id="fileInput" class="file-input" type="file" multiple />
+        </div>
+        <div id="fileList" class="file-list" aria-live="polite"></div>
+
+        <button id="submitBtn" class="cta" type="button">Serahkan</button>
+      </div>
+    </section>
+
+    <div class="bottom-nav-wrap" aria-hidden="false">
+      <div class="bottom-pad"></div>
+      <nav class="bottom-nav">
+        <div class="dock">
+          <a class="dock-btn account" href="profile.html" title="Akun">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5.33 0-8 2.67-8 6v1h16v-1c0-3.33-2.67-6-8-6Z" fill="#111827"/></svg>
+          </a>
+          <a class="dock-btn home" href="menu-awal.html" title="Beranda">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z" fill="#0f172a"/></svg>
+          </a>
+          <a class="dock-btn back" href="#" title="Kembali">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 7l-5 5 5 5" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </main>
+
+  <script>
+    const dropbox = document.getElementById('dropbox');
+    const fileInput = document.getElementById('fileInput');
+    const fileList = document.getElementById('fileList');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function renderFiles(files){
+      fileList.innerHTML = '';
+      [...files].forEach((f, idx)=>{
+        const row = document.createElement('div');
+        row.className = 'file-item';
+        const name = document.createElement('div');
+        name.className = 'file-name';
+        name.textContent = f.name + ` (${Math.ceil(f.size/1024)} KB)`;
+        const rm = document.createElement('button');
+        rm.className = 'remove-btn';
+        rm.innerHTML = '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12M18 6L6 18" stroke="#0f172a" stroke-width="2" stroke-linecap="round"/></svg>';
+        rm.onclick = ()=>{
+          const dt = new DataTransfer();
+          [...fileInput.files].forEach((ff, i)=>{ if(i!==idx) dt.items.add(ff) });
+          fileInput.files = dt.files; renderFiles(fileInput.files);
+        }
+        row.appendChild(name); row.appendChild(rm); fileList.appendChild(row);
+      });
+    }
+
+    // Drag & Drop events
+    ['dragenter','dragover'].forEach(ev=>{
+      dropbox.addEventListener(ev, e=>{ e.preventDefault(); e.stopPropagation(); dropbox.classList.add('dragover'); });
+    });
+    ['dragleave','drop'].forEach(ev=>{
+      dropbox.addEventListener(ev, e=>{ e.preventDefault(); e.stopPropagation(); dropbox.classList.remove('dragover'); });
+    });
+    dropbox.addEventListener('drop', e=>{
+      const dt = e.dataTransfer; if(!dt) return;
+      const files = dt.files; if(!files || !files.length) return;
+      const merged = new DataTransfer();
+      [...(fileInput.files||[])].forEach(f=>merged.items.add(f));
+      [...files].forEach(f=>merged.items.add(f));
+      fileInput.files = merged.files; renderFiles(fileInput.files);
+    });
+
+    // Click to browse
+    dropbox.addEventListener('click', ()=> fileInput.click());
+    fileInput.addEventListener('change', ()=> renderFiles(fileInput.files));
+
+    // Button animation
+    submitBtn.addEventListener('click', async ()=>{ 
+      submitBtn.classList.remove('clicked'); void submitBtn.offsetWidth; submitBtn.classList.add('clicked'); 
+      const files = fileInput.files;
+      if(!files || files.length === 0){
+        alert('Silakan pilih minimal 1 berkas sebelum menyerahkan.');
+        return;
+      }
+      try{
+        const fd = new FormData();
+        for(let i=0;i<files.length;i++){ fd.append('files[]', files[i]); }
+        const res = await fetch('api/upload_files.php', { method:'POST', body: fd });
+        if(!res.ok){ alert('Gagal mengunggah berkas. Coba lagi.'); return; }
+        const data = await res.json();
+        if(!data || !data.success){ alert('Gagal mengunggah berkas.'); return; }
+        try{ localStorage.setItem('uploaded_files', JSON.stringify(data.files||[])); }catch{}
+        setTimeout(()=>{ window.location.href = 'berkas-terkirim.html'; }, 220);
+      }catch(e){
+        alert('Terjadi kesalahan jaringan saat mengunggah.');
+      }
+    });
+
+    // Dock animation
+    document.querySelectorAll('.dock-btn').forEach(el=>{
+      el.addEventListener('click', ()=>{ el.classList.remove('clicked'); void el.offsetWidth; el.classList.add('clicked'); });
+    });
+    document.querySelectorAll('.dock-btn.back').forEach(a=>{
+      a.addEventListener('click', (e)=>{ e.preventDefault(); history.back(); });
+    });
+    document.querySelectorAll('.dock-btn.home').forEach(a=>{ a.setAttribute('href','menu-awal.html'); });
+  </script>
+  <script src="assets/icons.js"></script>
+</body>
+</html>

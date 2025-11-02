@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Form Pelayanan Reaktivasi Peserta Mahasiswa - SiLantra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{ --bg-top:#c5dd74; --bg-mid:#86c18d; --bg-bottom:#5b7fb4; --card:#ffffff; --text:#111827 }
+    *{ box-sizing:border-box }
+    html,body{ height:100%; margin:0; font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif; color:var(--text) }
+    html{ background:linear-gradient(180deg,var(--bg-top) 0%, var(--bg-mid) 45%, var(--bg-bottom) 100%); background-attachment:fixed; background-repeat:no-repeat; background-size:cover }
+    body{ background:transparent; display:flex; justify-content:center; align-items:flex-start }
+    .phone{ width:390px; max-width:100%; min-height:100vh; position:relative; display:flex; flex-direction:column; padding-bottom:94px }
+
+    /* Header card */
+    .header-card{ margin:12px 0 0; padding:14px 18px 12px; background:#ffffff; border:1px solid rgba(0,0,0,.12); border-radius:18px }
+    .header-card .title{ font-weight:800; font-size:20px }
+    .header-card .subtitle{ margin-top:6px; color:#334155; font-size:12px; font-style:italic }
+
+    /* Form card */
+    .form-wrap{ padding:18px }
+    .card{ background:var(--card); border-radius:18px; border:1px solid rgba(0,0,0,.12); box-shadow:0 6px 14px rgba(0,0,0,.18); padding:16px; margin-bottom:22px }
+    .field{ margin-bottom:14px }
+    .label{ font-weight:800; font-size:14px; margin-bottom:8px }
+    .input, .textarea{
+      width:100%; border:3px solid #e5e7eb; outline:none; background:#f7f7f9; color:#111827;
+      padding:12px 12px; border-radius:12px; box-shadow:0 2px 0 rgba(0,0,0,.04) inset, 0 3px 8px rgba(0,0,0,.08);
+      font-size:14px; transition:border-color .2s ease, box-shadow .2s ease, transform .12s ease;
+    }
+    .input::placeholder, .textarea::placeholder{ color:#9ba3af }
+    .input:focus, .textarea:focus{ border-color:#6366f1; box-shadow:0 0 0 4px rgba(99,102,241,.15), 0 3px 8px rgba(0,0,0,.08) }
+    .textarea{ resize: none }
+    @keyframes inputPulse{ 0%{transform:scale(1)} 40%{transform:scale(1.01)} 100%{transform:scale(1)} }
+    .typing{ animation: inputPulse 280ms ease-out }
+
+    .cta{ display:flex; width:100%; align-items:center; justify-content:center; padding:16px 20px; border-radius:18px; color:#111827; font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif; font-weight:800; font-size:18px; letter-spacing:.4px; margin-top:10px; background:linear-gradient(135deg,#4338ca,#e11d48,#f97316); border:none; box-shadow:0 10px 16px rgba(0,0,0,.24); transition: transform .16s ease, filter .2s ease, box-shadow .16s ease; text-align:center }
+    .cta:hover{ filter:brightness(1.03); transform: translateY(-1px) scale(1.01); box-shadow:0 10px 16px rgba(0,0,0,.24) }
+    .cta:active{ transform: scale(.98) }
+    @keyframes pop{ 0%{transform:scale(.96)} 55%{transform:scale(1.05)} 85%{transform:scale(.995)} 100%{transform:scale(1)} }
+    .cta.clicked{ animation: pop 260ms cubic-bezier(.2,.8,.2,1) }
+
+    /* Bottom dock */
+    .bottom-nav-wrap{ position:fixed; left:0; right:0; bottom:0 }
+    .bottom-pad{ height:64px; background:transparent }
+    .bottom-nav{ position:absolute; left:0; right:0; bottom:10px; display:flex; justify-content:center }
+    .dock{ display:flex; gap:24px; background:#d1d5db; padding:10px 18px; border-radius:12px; box-shadow:0 6px 16px rgba(0,0,0,.25) }
+    .dock-btn{ width:44px; height:44px; border-radius:10px; display:grid; place-items:center; background:#9ca3af; color:#0f172a; transition: transform .18s ease, filter .2s ease, box-shadow .18s ease }
+    .dock-btn:hover{ filter:brightness(1.05); transform: translateY(-2px) }
+    .dock-btn:active{ transform: translateY(0) scale(.96) }
+    @keyframes dockBounce{ 0%{transform:translateY(0) scale(1)} 40%{transform:translateY(-3px) scale(1.04)} 100%{transform:translateY(0) scale(1)} }
+    .dock-btn.clicked{ animation: dockBounce 280ms ease-out }
+    .dock-btn.account{ background:#a7f3d0 }
+    .dock-btn.home{ background:#93c5fd }
+    .dock-btn.back{ background:#6ee7e7 }
+    .dock-btn svg{ width:22px; height:22px }
+  </style>
+</head>
+<body>
+  <main class="phone" role="main">
+    <section class="header-card">
+      <div class="title">Form Pelayanan Reaktivasi Peserta Mahasiswa</div>
+      <div class="subtitle">Silahkan mengisi form berikut!</div>
+    </section>
+
+    <section class="form-wrap">
+      <div class="card">
+        <div class="field">
+          <div class="label">NIK</div>
+          <input id="iNik" class="input" inputmode="numeric" maxlength="16" pattern="\d{16}" autocomplete="off" placeholder="contoh : 517xxxxxxxx" />
+        </div>
+
+        <div class="field">
+          <div class="label">No Handphone</div>
+          <input id="iHp" class="input" placeholder="contoh : 087xxxxxxx" />
+        </div>
+
+        <div class="field">
+          <div class="label">No. Surat Keterangan Aktif Kuliah</div>
+          <input id="iSurat" class="input" placeholder="contoh : XX/X/XX.XX/" />
+        </div>
+
+        <div class="field">
+          <div class="label">DESKRIPSI KELUHAN</div>
+          <textarea id="iKeluhan" class="textarea" rows="3" placeholder="contoh : saya ingin xxxxx"></textarea>
+        </div>
+
+        <button id="btnSubmit" class="cta" type="button">Ambil Antrian</button>
+      </div>
+    </section>
+
+    <div class="bottom-nav-wrap" aria-hidden="false">
+      <div class="bottom-pad"></div>
+      <nav class="bottom-nav">
+        <div class="dock">
+          <a class="dock-btn account" href="profile.html" title="Akun">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5.33 0-8 2.67-8 6v1h16v-1c0-3.33-2.67-6-8-6Z" fill="#111827"/></svg>
+          </a>
+          <a class="dock-btn home" href="#" title="Beranda">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z" fill="#0f172a"/></svg>
+          </a>
+          <a class="dock-btn back" href="#" title="Kembali">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 7l-5 5 5 5" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </main>
+
+  <script>
+    // Prefill identitas dari localStorage
+    (function(){
+      const nik = localStorage.getItem('reg_nik') || localStorage.getItem('nik') || localStorage.getItem('rx_nik') || '';
+      const hp = localStorage.getItem('reg_phone') || localStorage.getItem('rx_hp') || '';
+      const iNik = document.getElementById('iNik'); if(nik && iNik) iNik.value = nik;
+      const iHp = document.getElementById('iHp'); if(hp && iHp) iHp.value = hp;
+    })();
+    // Animasi input dinamis saat mengetik
+    const inputs = document.querySelectorAll('.input, .textarea');
+    inputs.forEach(el=>{
+      el.addEventListener('input', ()=>{ el.classList.remove('typing'); void el.offsetWidth; el.classList.add('typing'); });
+      el.addEventListener('animationend', ()=> el.classList.remove('typing'));
+    });
+
+    // Submit ke backend dengan service_code (A=Administrasi, C=Prioritas)
+    const iNik = document.getElementById('iNik');
+    const iHp = document.getElementById('iHp');
+    const iSurat = document.getElementById('iSurat');
+    const iKeluhan = document.getElementById('iKeluhan');
+    const btn = document.getElementById('btnSubmit');
+
+    btn.addEventListener('click', async ()=>{
+      btn.classList.remove('clicked'); void btn.offsetWidth; btn.classList.add('clicked');
+
+      const nik = (iNik.value||'').replace(/\D/g,''); iNik.value = nik;
+      const hp = (iHp.value||'').trim();
+      const surat = (iSurat.value||'').trim();
+      const keluhan = (iKeluhan.value||'').trim();
+
+      if(nik.length !== 16){ alert('NIK harus 16 digit angka.'); iNik.focus(); return; }
+      if(!/^\+?\d{8,15}$/.test(hp)){ alert('No Telepon wajib dan harus berupa angka (8-15 digit), boleh diawali +.'); iHp.focus(); return; }
+      if(!surat){ alert('Nomor Surat Keterangan wajib diisi.'); iSurat.focus(); return; }
+      if(!keluhan){ alert('Deskripsi keluhan wajib diisi.'); iKeluhan.focus(); return; }
+
+      const isPrioritas = (localStorage.getItem('is_prioritas') === '1');
+      const serviceCode = isPrioritas ? 'C' : 'A';
+      const targetReceipt = isPrioritas ? 'bukti-antrian-prioritas.html' : 'bukti-antrian-kantor-cabang-a.html';
+
+      try{
+        const form = new URLSearchParams();
+        form.set('service_code', serviceCode);
+        form.set('nik', nik);
+        form.set('phone', hp);
+        form.set('notes', keluhan);
+        form.set('surat_keterangan', surat);
+        form.set('kategori', 'REAKTIVASI');
+
+        const res = await fetch('api/create_ticket.php', { method:'POST', body: form });
+        if(!res.ok){
+          try{
+            localStorage.setItem('registered_at', new Date().toISOString());
+            localStorage.setItem('kategori', 'REAKTIVASI');
+            localStorage.setItem('rx_service', serviceCode);
+            localStorage.setItem('rx_kategori', 'REAKTIVASI');
+            localStorage.setItem('nik', nik);
+            localStorage.setItem('hp', hp);
+            localStorage.setItem('keluhan', keluhan);
+            localStorage.setItem('rx_nik', nik);
+            localStorage.setItem('rx_hp', hp);
+            localStorage.setItem('rx_keluhan', keluhan);
+            if(serviceCode==='A'){
+              localStorage.setItem('kc_nik', nik);
+              localStorage.setItem('kc_hp', hp);
+              localStorage.setItem('kc_keluhan', keluhan);
+              localStorage.setItem('kc_kategori', 'REAKTIVASI');
+            }
+          }catch{}
+          setTimeout(()=>{ window.location.href = targetReceipt; }, 100);
+          return;
+        }
+        let data; try{ data = await res.json(); }catch{
+          try{
+            localStorage.setItem('registered_at', new Date().toISOString());
+            localStorage.setItem('kategori', 'REAKTIVASI');
+            localStorage.setItem('nik', nik);
+            localStorage.setItem('hp', hp);
+            localStorage.setItem('keluhan', keluhan);
+          }catch{}
+          setTimeout(()=>{ window.location.href = targetReceipt; }, 100);
+          return;
+        }
+        if(!data || !data.success){
+          try{
+            localStorage.setItem('registered_at', new Date().toISOString());
+            localStorage.setItem('kategori', 'REAKTIVASI');
+            localStorage.setItem('nik', nik);
+            localStorage.setItem('hp', hp);
+            localStorage.setItem('keluhan', keluhan);
+          }catch{}
+          setTimeout(()=>{ window.location.href = targetReceipt; }, 100);
+          return;
+        }
+
+        try{
+          localStorage.setItem('last_ticket', JSON.stringify(data.ticket||{}));
+          localStorage.setItem('registered_at', new Date().toISOString());
+          // Fallback untuk bukti halaman
+          localStorage.setItem('kategori', 'REAKTIVASI');
+          localStorage.setItem('nik', nik);
+          localStorage.setItem('hp', hp);
+          localStorage.setItem('keluhan', keluhan);
+          localStorage.setItem('rx_service', serviceCode);
+          localStorage.setItem('rx_kategori', 'REAKTIVASI');
+          localStorage.setItem('rx_nik', nik);
+          localStorage.setItem('rx_hp', hp);
+          localStorage.setItem('rx_keluhan', keluhan);
+          if(serviceCode==='A'){
+            localStorage.setItem('kc_nik', nik);
+            localStorage.setItem('kc_hp', hp);
+            localStorage.setItem('kc_keluhan', keluhan);
+            localStorage.setItem('kc_kategori', 'REAKTIVASI');
+          }
+        }catch{}
+
+        setTimeout(()=>{ window.location.href = targetReceipt; }, 220);
+      }catch(e){
+        try{
+          const nik2 = (iNik.value||'').replace(/\D/g,'');
+          const hp2 = (iHp.value||'').trim();
+          const keluhan2 = (iKeluhan.value||'').trim();
+          localStorage.setItem('registered_at', new Date().toISOString());
+          localStorage.setItem('kategori', 'REAKTIVASI');
+          localStorage.setItem('nik', nik2);
+          localStorage.setItem('hp', hp2);
+          localStorage.setItem('keluhan', keluhan2);
+        }catch{}
+        setTimeout(()=>{ window.location.href = targetReceipt; }, 100);
+      }
+    });
+
+    // Dock anim + routing konsisten
+    document.querySelectorAll('.dock-btn').forEach(el=>{
+      el.addEventListener('click', ()=>{ el.classList.remove('clicked'); void el.offsetWidth; el.classList.add('clicked'); });
+    });
+    document.querySelectorAll('.dock-btn.home').forEach(a=>{ a.setAttribute('href','menu-awal.html'); });
+    document.querySelectorAll('.dock-btn.back').forEach(a=>{
+      a.addEventListener('click', (e)=>{ e.preventDefault(); history.back(); });
+    });
+  </script>
+  <script src="assets/icons.js"></script>
+</body>
+</html>

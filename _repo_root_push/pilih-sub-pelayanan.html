@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sub Pelayanan Antrian - SiLantra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{ --bg-top:#c5dd74; --bg-mid:#86c18d; --bg-bottom:#5b7fb4; --card:#ffffff; --text:#111827 }
+    *{ box-sizing:border-box }
+    html,body{ height:100%; margin:0; font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif; color:var(--text) }
+    html{ background:linear-gradient(180deg,var(--bg-top) 0%, var(--bg-mid) 45%, var(--bg-bottom) 100%); background-attachment:fixed; background-repeat:no-repeat; background-size:cover }
+    body{ background:transparent; display:flex; justify-content:center; align-items:flex-start }
+    .phone{ width:390px; max-width:100%; min-height:100vh; position:relative; display:flex; flex-direction:column; padding-bottom:94px }
+
+    /* Header card (sesuai tampilan sebelumnya) */
+    .header-card{ margin:12px 0 0; padding:14px 18px 12px; background:#ffffff; border:1px solid rgba(0,0,0,.12); border-radius:18px }
+    .header-card .title{ font-weight:800; font-size:20px }
+    .header-card .subtitle{ margin-top:6px; color:#334155; font-size:12px; font-style:italic }
+
+    /* List */
+    .list{ padding:18px }
+    .card{ background:var(--card); border-radius:18px; border:1px solid rgba(0,0,0,.12); box-shadow:0 6px 14px rgba(0,0,0,.18); padding:16px; margin-bottom:22px; cursor:pointer; transition: transform .16s ease, box-shadow .16s ease }
+    .card:hover{ transform: translateY(-1px); box-shadow:0 10px 18px rgba(0,0,0,.22) }
+    .card:active{ transform: scale(.99) }
+    @keyframes pop{ 0%{transform:scale(.96)} 55%{transform:scale(1.05)} 85%{transform:scale(.995)} 100%{transform:scale(1)} }
+    .card.clicked{ animation: pop 260ms cubic-bezier(.2,.8,.2,1) }
+
+    .svc-title{ font-weight:800; font-size:18px }
+
+    .cta{ display:flex; width:100%; align-items:center; justify-content:center; padding:14px 18px; border-radius:16px; color:#111827; font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif; font-weight:600; font-size:16px; letter-spacing:.2px; margin-top:14px; background:linear-gradient(135deg,#4338ca,#e11d48,#f97316); border:none; box-shadow:0 10px 16px rgba(0,0,0,.24); transition: transform .16s ease, filter .2s ease, box-shadow .16s ease; text-align:center }
+    .cta:hover{ filter:brightness(1.03); transform: translateY(-1px) scale(1.01); box-shadow:0 10px 16px rgba(0,0,0,.24) }
+    .cta:active{ transform: scale(.98) }
+    .cta.clicked{ animation: pop 260ms cubic-bezier(.2,.8,.2,1) }
+
+    /* Bottom dock sama seperti halaman sebelumnya, dengan warna tidak abu-abu */
+    .bottom-nav-wrap{ position:fixed; left:0; right:0; bottom:0 }
+    .bottom-pad{ height:64px; background:transparent }
+    .bottom-nav{ position:absolute; left:0; right:0; bottom:10px; display:flex; justify-content:center }
+    .dock{ display:flex; gap:24px; background:#d1d5db; padding:10px 18px; border-radius:12px; box-shadow:0 6px 16px rgba(0,0,0,.25) }
+    .dock-btn{ width:44px; height:44px; border-radius:10px; display:grid; place-items:center; background:#9ca3af; color:#0f172a; transition: transform .18s ease, filter .2s ease, box-shadow .18s ease }
+    .dock-btn:hover{ filter:brightness(1.05); transform: translateY(-2px) }
+    .dock-btn:active{ transform: translateY(0) scale(.96) }
+    @keyframes dockBounce{ 0%{transform:translateY(0) scale(1)} 40%{transform:translateY(-3px) scale(1.04)} 100%{transform:translateY(0) scale(1)} }
+    .dock-btn.clicked{ animation: dockBounce 280ms ease-out }
+    .dock-btn.account{ background:#a7f3d0 }
+    .dock-btn.home{ background:#93c5fd }
+    .dock-btn.back{ background:#6ee7e7 }
+    .dock-btn svg{ width:22px; height:22px }
+  </style>
+</head>
+<body>
+  <main class="phone" role="main">
+    <section class="header-card">
+      <div class="title">Sub Pelayanan Antrian</div>
+      <div class="subtitle">Silahkan memilih layanan yang anda butuhkan!</div>
+    </section>
+
+    <section class="list">
+      <article class="card">
+        <div class="svc-title">Pendaftaran Baru</div>
+        <button class="cta" type="button">Isi dan Ambil Antrian</button>
+      </article>
+
+      <article class="card">
+        <div class="svc-title">Reaktivitas Kepesertaan</div>
+        <button class="cta" type="button">Isi dan Ambil Antrian</button>
+      </article>
+
+      <article class="card">
+        <div class="svc-title">Pindah Jenis Kepesertaan (Peralihan)</div>
+        <button class="cta" type="button">Isi dan Ambil Antrian</button>
+      </article>
+
+      <article class="card">
+        <div class="svc-title">Perubahan Data</div>
+        <button class="cta" type="button">Isi dan Ambil Antrian</button>
+      </article>
+
+      <article class="card">
+        <div class="svc-title">Perubahan FKTP Lebih Dari 3 Bulan</div>
+        <button class="cta" type="button">Isi dan Ambil Antrian</button>
+      </article>
+    </section>
+
+    <div class="bottom-nav-wrap" aria-hidden="false">
+      <div class="bottom-pad"></div>
+      <nav class="bottom-nav">
+        <div class="dock">
+          <a class="dock-btn account" href="profile.html" title="Akun">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5.33 0-8 2.67-8 6v1h16v-1c0-3.33-2.67-6-8-6Z" fill="#111827"/></svg>
+          </a>
+          <a class="dock-btn home" href="menu-awal.html" title="Beranda">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z" fill="#0f172a"/></svg>
+          </a>
+          <a class="dock-btn back" href="#" title="Kembali">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 7l-5 5 5 5" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </main>
+
+  <script>
+    // Animasi klik kartu dan tombol
+    document.querySelectorAll('.card').forEach(card=>{
+      card.addEventListener('click', ()=>{ card.classList.remove('clicked'); void card.offsetWidth; card.classList.add('clicked'); });
+    });
+    document.querySelectorAll('.cta').forEach(btn=>{
+      btn.addEventListener('click', (e)=>{ e.stopPropagation(); btn.classList.remove('clicked'); void btn.offsetWidth; btn.classList.add('clicked'); });
+    });
+
+    // Routing sesuai sub layanan (berurutan dengan daftar kartu)
+    const routeAfter = (el, url)=>{ if(!el) return; el.addEventListener('click', ()=> setTimeout(()=>{ window.location.href = url; }, 220)); };
+    const buttons = document.querySelectorAll('.list .card .cta');
+    routeAfter(buttons[0], 'form-pendaftaran-baru.html');
+    routeAfter(buttons[1], 'form-reaktivasi-peserta.html');
+    // Peralihan (pindah jenis kepesertaan) diarahkan ke form khusus Peralihan
+    routeAfter(buttons[2], 'form-peralihan.html');
+    routeAfter(buttons[3], 'form-perubahan-data.html');
+    // Perubahan FKTP > 3 bulan diarahkan ke form khusus 3 bulan
+    routeAfter(buttons[4], 'form-pindah-fktp-3bulan.html');
+
+    // Animasi dock
+    document.querySelectorAll('.dock-btn').forEach(el=>{
+      el.addEventListener('click', ()=>{ el.classList.remove('clicked'); void el.offsetWidth; el.classList.add('clicked'); });
+    });
+    // Dock routing
+    document.querySelectorAll('.dock-btn.back').forEach(a=>{
+      a.addEventListener('click', (e)=>{ e.preventDefault(); history.back(); });
+    });
+  </script>
+  <script src="assets/icons.js"></script>
+</body>
+</html>

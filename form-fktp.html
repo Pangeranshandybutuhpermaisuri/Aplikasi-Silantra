@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Form Pelayanan FKTP - SiLantra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{ --bg-top:#c5dd74; --bg-mid:#86c18d; --bg-bottom:#5b7fb4; --card:#ffffff; --text:#111827 }
+    *{ box-sizing:border-box }
+    html,body{ height:100%; margin:0; font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif; color:var(--text) }
+    html{ background:linear-gradient(180deg,var(--bg-top) 0%, var(--bg-mid) 45%, var(--bg-bottom) 100%); background-attachment:fixed; background-repeat:no-repeat; background-size:cover }
+    body{ background:transparent; display:flex; justify-content:center; align-items:flex-start }
+    .phone{ width:390px; max-width:100%; min-height:100vh; position:relative; display:flex; flex-direction:column; padding-bottom:94px }
+
+    /* Header card */
+    .header-card{ margin:12px 0 0; padding:14px 18px 12px; background:#ffffff; border:1px solid rgba(0,0,0,.12); border-radius:18px }
+    .header-card .title{ font-weight:800; font-size:20px }
+    .header-card .title .accent{ color:#ef4444 }
+    .header-card .subtitle{ margin-top:6px; color:#334155; font-size:12px; font-style:italic }
+
+    /* Form card */
+    .form-wrap{ padding:18px }
+    .card{ background:var(--card); border-radius:18px; border:1px solid rgba(0,0,0,.12); box-shadow:0 6px 14px rgba(0,0,0,.18); padding:16px; margin-bottom:22px }
+    .field{ margin-bottom:14px }
+    .label{ font-weight:800; font-size:14px; margin-bottom:8px }
+    .input, .textarea{
+      width:100%; border:3px solid #e5e7eb; outline:none; background:#f7f7f9; color:#111827;
+      padding:12px 12px; border-radius:12px; box-shadow:0 2px 0 rgba(0,0,0,.04) inset, 0 3px 8px rgba(0,0,0,.08);
+      font-size:14px; transition:border-color .2s ease, box-shadow .2s ease, transform .12s ease;
+    }
+    .input::placeholder, .textarea::placeholder{ color:#9ba3af }
+    .input:focus, .textarea:focus{ border-color:#6366f1; box-shadow:0 0 0 4px rgba(99,102,241,.15), 0 3px 8px rgba(0,0,0,.08) }
+    .textarea{ resize: none }
+
+    /* Animasi input dinamis */
+    @keyframes inputPulse{ 0%{transform:scale(1)} 40%{transform:scale(1.01)} 100%{transform:scale(1)} }
+    .typing{ animation: inputPulse 280ms ease-out }
+
+    .cta{ display:flex; width:100%; align-items:center; justify-content:center; padding:16px 20px; border-radius:18px; color:#111827; font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif; font-weight:800; font-size:18px; letter-spacing:.4px; margin-top:10px; background:linear-gradient(135deg,#4338ca,#e11d48,#f97316); border:none; box-shadow:0 10px 16px rgba(0,0,0,.24); transition: transform .16s ease, filter .2s ease, box-shadow .16s ease; text-align:center }
+    .cta:hover{ filter:brightness(1.03); transform: translateY(-1px) scale(1.01); box-shadow:0 10px 16px rgba(0,0,0,.24) }
+    .cta:active{ transform: scale(.98) }
+    @keyframes pop{ 0%{transform:scale(.96)} 55%{transform:scale(1.05)} 85%{transform:scale(.995)} 100%{transform:scale(1)} }
+    .cta.clicked{ animation: pop 260ms cubic-bezier(.2,.8,.2,1) }
+
+    /* Fancy select (custom dropdown) */
+    .native-hidden{ position:absolute !important; left:-9999px !important; width:1px !important; height:1px !important; overflow:hidden !important }
+    .select{ position:relative }
+    .select-trigger{
+      display:flex; align-items:center; justify-content:space-between; gap:8px; padding:12px 14px; border-radius:12px;
+      background:#f7f7f9; border:3px solid #e5e7eb; box-shadow:0 2px 0 rgba(0,0,0,.04) inset, 0 3px 8px rgba(0,0,0,.08);
+      font-size:14px; cursor:pointer; user-select:none; transition:border-color .2s ease, box-shadow .2s ease, transform .12s ease
+    }
+    .select.open .select-trigger{ border-color:#6366f1; box-shadow:0 0 0 4px rgba(99,102,241,.15), 0 3px 8px rgba(0,0,0,.08) }
+    .select-arrow{ width:18px; height:18px; display:grid; place-items:center; transition:transform .18s ease }
+    .select.open .select-arrow{ transform:rotate(180deg) }
+    .select-menu{
+      position:absolute; left:0; right:0; top:calc(100% + 6px); background:#ffffff; border:1px solid rgba(0,0,0,.12);
+      border-radius:12px; box-shadow:0 14px 30px rgba(0,0,0,.18); overflow:hidden; opacity:0; transform:translateY(-6px); pointer-events:none
+    }
+    .select.open .select-menu{ opacity:1; pointer-events:auto; transform:translateY(0); animation: menuSlide .16s ease-out }
+    @keyframes menuSlide{ from{opacity:0; transform:translateY(-6px)} to{opacity:1; transform:translateY(0)} }
+    .select-option{ padding:12px 14px; cursor:pointer; display:flex; align-items:center; gap:8px; transition:background .12s ease, transform .06s ease }
+    .select-option:hover{ background:#f3f4f6 }
+    .select-option.active{ background:#eef2ff }
+    .select-option .dot{ width:8px; height:8px; border-radius:999px; background:#a1a1aa }
+    .select-option.active .dot{ background:#6366f1 }
+    .select.open .select-option{ animation: optionPop .12s ease-out }
+    @keyframes optionPop{ from{ transform:scale(.98) } to{ transform:scale(1) } }
+
+    /* Bottom dock (warna sama, tidak abu-abu) */
+    .bottom-nav-wrap{ position:fixed; left:0; right:0; bottom:0 }
+    .bottom-pad{ height:64px; background:transparent }
+    .bottom-nav{ position:absolute; left:0; right:0; bottom:10px; display:flex; justify-content:center }
+    .dock{ display:flex; gap:24px; background:#d1d5db; padding:10px 18px; border-radius:12px; box-shadow:0 6px 16px rgba(0,0,0,.25) }
+    .dock-btn{ width:44px; height:44px; border-radius:10px; display:grid; place-items:center; background:#9ca3af; color:#0f172a; transition: transform .18s ease, filter .2s ease, box-shadow .18s ease }
+    .dock-btn:hover{ filter:brightness(1.05); transform: translateY(-2px) }
+    .dock-btn:active{ transform: translateY(0) scale(.96) }
+    @keyframes dockBounce{ 0%{transform:translateY(0) scale(1)} 40%{transform:translateY(-3px) scale(1.04)} 100%{transform:translateY(0) scale(1)} }
+    .dock-btn.clicked{ animation: dockBounce 280ms ease-out }
+    .dock-btn.account{ background:#a7f3d0 }
+    .dock-btn.home{ background:#93c5fd }
+    .dock-btn.back{ background:#6ee7e7 }
+    .dock-btn svg{ width:22px; height:22px }
+  </style>
+</head>
+<body>
+  <main class="phone" role="main">
+    <section class="header-card">
+      <div class="title">Form Pelayanan <span class="accent">FKTP</span></div>
+      <div class="subtitle">Silahkan mengisi form berikut!</div>
+    </section>
+
+    <section class="form-wrap">
+      <div class="card">
+        <div class="field">
+          <div class="label">PILIH POLI</div>
+          <select id="fld_poli" class="input native-hidden">
+            <option value="POLI UMUM">UMUM</option>
+            <option value="POLI GIGI">GIGI</option>
+            <option value="POLI THT">THT</option>
+          </select>
+          <div class="select" data-target="fld_poli">
+            <div class="select-trigger" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+              <span class="select-label">UMUM</span>
+              <span class="select-arrow">▾</span>
+            </div>
+            <div class="select-menu" role="listbox"></div>
+          </div>
+        </div>
+        <div class="field">
+          <div class="label">NAMA LENGKAP</div>
+          <input id="fld_nama" class="input" placeholder="contoh : Made Antonio Maumere" />
+        </div>
+
+        <div class="field">
+          <div class="label">Nomor BPJS</div>
+          <input id="fld_bpjs" class="input" placeholder="contoh : 0008974xxxx" />
+        </div>
+
+        <div class="field">
+          <div class="label">Nama Dokter</div>
+          <input id="fld_dokter" class="input" placeholder="contoh : dr. Anton" />
+        </div>
+
+        <div class="field">
+          <div class="label">Nomor Handphone</div>
+          <input id="fld_hp" class="input" placeholder="contoh : 0860912xxxx" />
+        </div>
+
+        <div class="field">
+          <div class="label">Tanggal Kunjungan</div>
+          <input id="fld_tgl" class="input" placeholder="contoh : 13 September 2025" />
+        </div>
+
+        <div class="field">
+          <div class="label">DESKRIPSI KELUHAN</div>
+          <textarea id="fld_keluhan" class="textarea" rows="3" placeholder="contoh : saya ingin xxxxx"></textarea>
+        </div>
+
+        <button class="cta" type="button">Ambil Antrian</button>
+      </div>
+    </section>
+
+    <div class="bottom-nav-wrap" aria-hidden="false">
+      <div class="bottom-pad"></div>
+      <nav class="bottom-nav">
+        <div class="dock">
+          <a class="dock-btn account" href="profile.html" title="Akun">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5.33 0-8 2.67-8 6v1h16v-1c0-3.33-2.67-6-8-6Z" fill="#111827"/></svg>
+          </a>
+          <a class="dock-btn home" href="menu-awal.html" title="Beranda">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z" fill="#0f172a"/></svg>
+          </a>
+          <a class="dock-btn back" href="#" title="Kembali">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 7l-5 5 5 5" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </main>
+
+  <script>
+    // Animasi input dinamis saat mengetik
+    const inputs = document.querySelectorAll('.input, .textarea');
+    inputs.forEach(el=>{
+      el.addEventListener('input', ()=>{ el.classList.remove('typing'); void el.offsetWidth; el.classList.add('typing'); });
+      el.addEventListener('animationend', ()=> el.classList.remove('typing'));
+    });
+
+    // Prefill identitas dari akun
+    (function(){
+      const nama = localStorage.getItem('peserta_nama') || '';
+      const hp = localStorage.getItem('reg_phone') || '';
+      const bpjs = localStorage.getItem('bpjs') || '';
+      const namaEl = document.getElementById('fld_nama'); if(nama && namaEl) namaEl.value = nama;
+      const hpEl = document.getElementById('fld_hp'); if(hp && hpEl) hpEl.value = hp;
+      const bpjsEl = document.getElementById('fld_bpjs'); if(bpjs && bpjsEl) bpjsEl.value = bpjs;
+    })();
+    // Animasi tombol dan dock + submit ke backend (service PU)
+    const btn = document.querySelector('.cta');
+    btn.addEventListener('click', async ()=>{ 
+      btn.classList.remove('clicked'); void btn.offsetWidth; btn.classList.add('clicked'); 
+      const poli = (document.getElementById('fld_poli')?.value||'POLI UMUM');
+      const nama = (document.getElementById('fld_nama')?.value||'').trim();
+      const bpjs = (document.getElementById('fld_bpjs')?.value||'').trim();
+      const dokter = (document.getElementById('fld_dokter')?.value||'').trim();
+      const hp = (document.getElementById('fld_hp')?.value||'').trim();
+      const tgl = (document.getElementById('fld_tgl')?.value||'').trim();
+      const keluhan = (document.getElementById('fld_keluhan')?.value||'').trim();
+      if(!nama){ alert('Nama lengkap wajib diisi.'); document.getElementById('fld_nama')?.focus(); return; }
+      if(!bpjs){ alert('Nomor BPJS wajib diisi.'); document.getElementById('fld_bpjs')?.focus(); return; }
+      if(!dokter){ alert('Nama Dokter wajib diisi.'); document.getElementById('fld_dokter')?.focus(); return; }
+      if(!/^\+?\d{8,15}$/.test(hp)){ alert('No HP tidak valid.'); document.getElementById('fld_hp')?.focus(); return; }
+      if(!tgl){ alert('Tanggal kunjungan wajib diisi.'); document.getElementById('fld_tgl')?.focus(); return; }
+      if(!keluhan){ alert('Deskripsi keluhan wajib diisi.'); document.getElementById('fld_keluhan')?.focus(); return; }
+      try{
+        const form = new URLSearchParams();
+        form.set('service_code','PU');
+        form.set('poli', poli);
+        form.set('nik','');
+        form.set('full_name', nama);
+        form.set('username', localStorage.getItem('reg_username') || '');
+        form.set('phone', hp);
+        form.set('email','');
+        form.set('desc', keluhan);
+        form.set('bpjs', bpjs);
+        form.set('dokter', dokter);
+        form.set('tgl', tgl);
+        const res = await fetch('api/create_ticket.php', { method:'POST', body: form });
+        if(!res.ok){
+          try{
+            localStorage.setItem('registered_at', new Date().toISOString());
+            localStorage.setItem('pu_jenis', poli);
+            localStorage.setItem('pu_nama', nama);
+            localStorage.setItem('pu_bpjs', bpjs);
+            localStorage.setItem('pu_dokter', dokter);
+            localStorage.setItem('pu_hp', hp);
+            localStorage.setItem('pu_tgl', tgl);
+            localStorage.setItem('pu_keluhan', keluhan);
+          }catch{}
+          setTimeout(()=>{ window.location.href = 'bukti-antrian-puskesmas.html'; }, 100);
+          return;
+        }
+        let data; try{ data = await res.json(); }catch{
+          try{
+            localStorage.setItem('registered_at', new Date().toISOString());
+            localStorage.setItem('pu_jenis', poli);
+            localStorage.setItem('pu_nama', nama);
+            localStorage.setItem('pu_bpjs', bpjs);
+            localStorage.setItem('pu_dokter', dokter);
+            localStorage.setItem('pu_hp', hp);
+            localStorage.setItem('pu_tgl', tgl);
+            localStorage.setItem('pu_keluhan', keluhan);
+          }catch{}
+          setTimeout(()=>{ window.location.href = 'bukti-antrian-puskesmas.html'; }, 100);
+          return;
+        }
+        if(!data || !data.success){
+          try{
+            localStorage.setItem('registered_at', new Date().toISOString());
+            localStorage.setItem('pu_jenis', poli);
+            localStorage.setItem('pu_nama', nama);
+            localStorage.setItem('pu_bpjs', bpjs);
+            localStorage.setItem('pu_dokter', dokter);
+            localStorage.setItem('pu_hp', hp);
+            localStorage.setItem('pu_tgl', tgl);
+            localStorage.setItem('pu_keluhan', keluhan);
+          }catch{}
+          setTimeout(()=>{ window.location.href = 'bukti-antrian-puskesmas.html'; }, 100);
+          return;
+        }
+        try{
+          localStorage.setItem('registered_at', new Date().toISOString());
+          localStorage.setItem('last_ticket', JSON.stringify(data.ticket||{}));
+          // fallback keys
+          localStorage.setItem('pu_jenis', poli);
+          localStorage.setItem('pu_nama', nama);
+          localStorage.setItem('pu_bpjs', bpjs);
+          localStorage.setItem('pu_dokter', dokter);
+          localStorage.setItem('pu_hp', hp);
+          localStorage.setItem('pu_tgl', tgl);
+          localStorage.setItem('pu_keluhan', keluhan);
+        }catch{}
+        setTimeout(()=>{ window.location.href = 'bukti-antrian-puskesmas.html'; }, 220);
+      }catch(e){
+        try{
+          const nama = (document.getElementById('fld_nama')?.value||'').trim();
+          const bpjs = (document.getElementById('fld_bpjs')?.value||'').trim();
+          const dokter = (document.getElementById('fld_dokter')?.value||'').trim();
+          const hp = (document.getElementById('fld_hp')?.value||'').trim();
+          const tgl = (document.getElementById('fld_tgl')?.value||'').trim();
+          const keluhan = (document.getElementById('fld_keluhan')?.value||'').trim();
+          localStorage.setItem('registered_at', new Date().toISOString());
+          localStorage.setItem('pu_jenis','POLI UMUM');
+          localStorage.setItem('pu_nama', nama);
+          localStorage.setItem('pu_bpjs', bpjs);
+          localStorage.setItem('pu_dokter', dokter);
+          localStorage.setItem('pu_hp', hp);
+          localStorage.setItem('pu_tgl', tgl);
+          localStorage.setItem('pu_keluhan', keluhan);
+        }catch{}
+        setTimeout(()=>{ window.location.href = 'bukti-antrian-puskesmas.html'; }, 100);
+      }
+    });
+    // Build fancy select from native select
+    (function(){
+      const wrap = document.querySelector('.select[data-target="fld_poli"]');
+      const native = document.getElementById('fld_poli');
+      if(!wrap || !native) return;
+      const trigger = wrap.querySelector('.select-trigger');
+      const label = wrap.querySelector('.select-label');
+      const menu = wrap.querySelector('.select-menu');
+      const render = ()=>{
+        menu.innerHTML = '';
+        Array.from(native.options).forEach((opt,i)=>{
+          const div = document.createElement('div');
+          div.className = 'select-option' + (opt.selected?' active':'');
+          div.setAttribute('role','option'); div.setAttribute('data-val', opt.value);
+          div.innerHTML = '<span class="dot"></span><span>'+ opt.text +'</span>';
+          div.addEventListener('click', ()=>{ native.value = opt.value; label.textContent = opt.text; close(); });
+          menu.appendChild(div);
+        });
+      };
+      const open = ()=>{ wrap.classList.add('open'); trigger.setAttribute('aria-expanded','true'); };
+      const close = ()=>{ wrap.classList.remove('open'); trigger.setAttribute('aria-expanded','false'); };
+      trigger.addEventListener('click', ()=> wrap.classList.contains('open')? close(): open());
+      trigger.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); wrap.classList.contains('open')? close(): open(); } });
+      document.addEventListener('click', (e)=>{ if(!wrap.contains(e.target)) close(); });
+      const sync = ()=>{ const sel = native.options[native.selectedIndex]; if(sel){ label.textContent = sel.text; } render(); };
+      native.addEventListener('change', sync);
+      sync();
+    })();
+
+    document.querySelectorAll('.dock-btn').forEach(el=>{
+      el.addEventListener('click', ()=>{ el.classList.remove('clicked'); void el.offsetWidth; el.classList.add('clicked'); });
+    });
+    document.querySelectorAll('.dock-btn.back').forEach(a=>{
+      a.addEventListener('click', (e)=>{ e.preventDefault(); history.back(); });
+    });
+  </script>
+  <script src="assets/icons.js"></script>
+</body>
+</html>

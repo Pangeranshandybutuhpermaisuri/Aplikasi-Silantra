@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Berkas Terkirim - SiLantra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{ --bg-top:#c5dd74; --bg-mid:#86c18d; --bg-bottom:#5b7fb4; --card:#ffffff; --text:#111827 }
+    *{ box-sizing:border-box }
+    html,body{ height:100%; margin:0; font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif; color:var(--text) }
+    html{ background:linear-gradient(180deg,var(--bg-top) 0%, var(--bg-mid) 45%, var(--bg-bottom) 100%); background-attachment:fixed; background-repeat:no-repeat; background-size:cover }
+    body{ background:transparent; display:flex; justify-content:center; align-items:flex-start }
+    .phone{ width:390px; max-width:100%; min-height:100vh; position:relative; display:flex; flex-direction:column; padding-bottom:94px }
+
+    .wrap{ padding:18px }
+    .card{ background:var(--card); border:1px solid rgba(0,0,0,.12); border-radius:18px; box-shadow:0 10px 18px rgba(0,0,0,.18); padding:24px; text-align:center }
+    .icon{ display:grid; place-items:center; margin:8px auto 12px; position:relative }
+    .icon img{ width:84px; height:84px; object-fit:contain; filter: drop-shadow(0 2px 2px rgba(0,0,0,.15)); animation: badgePop .32s ease-out, badgePulse 2.4s ease-in-out .32s infinite }
+    .icon svg{ width:84px; height:84px; animation: badgePop .32s ease-out, badgePulse 2.4s ease-in-out .32s infinite }
+    @keyframes badgePop{0%{transform:scale(.6); opacity:.0} 60%{transform:scale(1.1); opacity:1} 100%{transform:scale(1)}}
+    @keyframes badgePulse{0%,100%{transform:scale(1)} 50%{transform:scale(1.06)}}
+    .title{ font-weight:900; font-size:20px; letter-spacing:.3px }
+    .desc{ margin-top:6px; color:#334155; font-size:13px }
+
+    .cta{ display:flex; width:100%; align-items:center; justify-content:center; padding:14px 18px; border-radius:16px; color:#111827; font-weight:800; letter-spacing:.4px; margin-top:18px; background:linear-gradient(135deg,#4338ca,#e11d48,#f97316); border:none; box-shadow:0 10px 16px rgba(0,0,0,.24); transition: transform .16s ease, filter .2s ease, box-shadow .16s ease }
+    .cta:active{ transform: scale(.98) }
+    .cta.clicked{ animation: pop 260ms cubic-bezier(.2,.8,.2,1) }
+    @keyframes pop{ 0%{transform:scale(.96)} 55%{transform:scale(1.05)} 85%{transform:scale(.995)} 100%{transform:scale(1)} }
+
+    .bottom-nav-wrap{ position:fixed; left:0; right:0; bottom:0 }
+    .bottom-pad{ height:64px; background:transparent }
+    .bottom-nav{ position:absolute; left:0; right:0; bottom:10px; display:flex; justify-content:center }
+    .dock{ display:flex; gap:24px; background:#d1d5db; padding:10px 18px; border-radius:12px; box-shadow:0 6px 16px rgba(0,0,0,.25) }
+    .dock-btn{ width:44px; height:44px; border-radius:10px; display:grid; place-items:center; background:#9ca3af; color:#0f172a; transition: transform .18s ease, filter .2s ease, box-shadow .18s ease }
+    .dock-btn.account{ background:#a7f3d0 }
+    .dock-btn.home{ background:#93c5fd }
+    .dock-btn.back{ background:#6ee7e7 }
+    .dock-btn svg{ width:22px; height:22px }
+  </style>
+</head>
+<body>
+  <main class="phone" role="main">
+    <section class="wrap">
+      <div class="card">
+        <div class="icon">
+          <img id="confirmCheckImg" alt="verified" style="display:none" />
+          <svg id="confirmCheckSvg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 7l-9 9-4-4" stroke="#065f46" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="title">Konfirmasi Diserahkan</div>
+        <div class="desc">Berkas Badan Usaha Anda telah dikumpulkan. Silakan menunggu informasi selanjutnya.</div>
+        <button id="backHome" class="cta" type="button">Kembali ke Beranda</button>
+      </div>
+    </section>
+
+    <div class="bottom-nav-wrap" aria-hidden="false">
+      <div class="bottom-pad"></div>
+      <nav class="bottom-nav">
+        <div class="dock">
+          <a class="dock-btn account" href="profile.html" title="Akun">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0 2c-5.33 0-8 2.67-8 6v1h16v-1c0-3.33-2.67-6-8-6Z" fill="#111827"/></svg>
+          </a>
+          <a class="dock-btn home" href="menu-awal.html" title="Beranda">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z" fill="#0f172a"/></svg>
+          </a>
+          <a class="dock-btn back" href="#" title="Kembali">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 7l-5 5 5 5" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </main>
+
+  <script>
+    const backHome = document.getElementById('backHome');
+    backHome.addEventListener('click', ()=>{ backHome.classList.remove('clicked'); void backHome.offsetWidth; backHome.classList.add('clicked'); setTimeout(()=>{ window.location.href = 'menu-awal.html'; }, 220); });
+    document.querySelectorAll('.dock-btn').forEach(el=>{
+      el.addEventListener('click', ()=>{ el.classList.remove('clicked'); void el.offsetWidth; el.classList.add('clicked'); });
+    });
+  </script>
+  <script>
+    window.CheckIcon = 'assets/CHECK-removebg-preview 1.png';
+  </script>
+  <script>
+    (function(){
+      const img = document.getElementById('confirmCheckImg');
+      const svg = document.getElementById('confirmCheckSvg');
+      const candidate = window.CheckIcon || 'assets/check.png';
+      const test = new Image();
+      test.onload = function(){ img.src = candidate; img.style.display='block'; if(svg) svg.style.display='none'; };
+      test.onerror = function(){ img.remove(); if(svg) svg.style.display='block'; };
+      test.src = candidate;
+    })();
+  </script>
+  <script src="assets/icons.js"></script>
+</body>
+</html>
